@@ -20,17 +20,45 @@ body {
   left: 300px;
 }
 
-#bankSideBar {
-  height: 600px;
-  width: 100px;
-  border: 2px solid white;
-  float: right;
-}
-
 #gameTitle {
   position: fixed;
   top: 220px;
   left: 180px;
   font-family: 'Lobster', cursive;
   font-size: 70px;
+}
+
+#betCircle {
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+  border: 2px dashed white;
+  position: fixed;
+  top: 400px;
+  left: 150px;
+}
+
+#betTitle {
+  position: fixed;
+  top: 510px;
+  left: 150px;
+  
+}
+
+#betAmount {
+  position: fixed;
+  top: 530px;
+  left: 150px;
+}
+
+#bankTitle {
+  position: fixed;
+  top: 550px;
+  left: 150px;
+}
+
+#bankAmount {
+  position: fixed;
+  top: 570px;
+  left: 150px;
 }
