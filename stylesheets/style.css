@@ -1,0 +1,36 @@
+body {
+  background-color: green;
+}
+
+#dealer {
+  height: 200px;
+  width: 100px;
+  border: 2px dashed white;
+  position: relative;
+  top: 10px;
+  left: 300px;
+}
+
+#player {
+  height: 200px;
+  width: 100px;
+  border: 2px dashed white;
+  position: relative;
+  top: 200px;
+  left: 300px;
+}
+
+#bankSideBar {
+  height: 600px;
+  width: 100px;
+  border: 2px solid white;
+  float: right;
+}
+
+#gameTitle {
+  position: fixed;
+  top: 220px;
+  left: 180px;
+  font-family: 'Lobster', cursive;
+  font-size: 70px;
+}
