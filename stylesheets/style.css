@@ -26,6 +26,7 @@ body {
   left: 180px;
   font-family: 'Lobster', cursive;
   font-size: 70px;
+  /*color: rgba(0,0,0,0.7);*/
 }
 
 #betCircle {
@@ -42,7 +43,7 @@ body {
   position: fixed;
   top: 510px;
   left: 150px;
-  
+
 }
 
 #betAmount {

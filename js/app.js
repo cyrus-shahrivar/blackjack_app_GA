@@ -5,7 +5,7 @@
 //
 
 //DOCUMENT READY
-//$(function(){}); onload function TO WRAP AROUND all
+$(function(){});
 
 //DECK OBJECT
 var Deck = {
@@ -13,9 +13,9 @@ var Deck = {
     deck: [],
     shuffledDeck: [],
     spentCardStack: [],
-    cardValues: [2,3,4,5,6,7,8,9,10,"JACK","QUEEN","KING","ACE"],
-    cardRealValues: [2,3,4,5,6,7,8,9,10,10,10,10,1],
-    cardSuitsTypes: ["Hearts","Spades","Clubs","Diamonds"],
+    cardValues: [2,3,4,5,6,7,8,9,10,"J","Q","K","A"],
+    cardRealValues: [2,3,4,5,6,7,8,9,10,10,10,10,11],
+    cardSuitsTypes: ["❤","♠","♣","♦"],
     createDeck: function(){
       // updates this.deck to a full deck of 52 cards as objects with value and suit
       for(var i=0; i<this.cardSuitsTypes.length; i++){
@@ -56,6 +56,13 @@ var Player = {
   playerHitOrStand: function(){
     //player choice
     this.hitStandStatus = prompt("Hit or Stand?").toLowerCase();
+  },
+  checkForAces: function(){
+      for(var i = 0; i<Player.playerCards.length; i++){
+        if(Player.playerCards[i].value === "A"){
+          return true;
+        }
+      } return false;
   }
 };
 
@@ -64,6 +71,13 @@ var Dealer = {
   dealerCards: [],
   hitStandStatus: "",
   cardSum: 0,
+  checkForAces: function(){
+      for(var i = 0; i<Dealer.dealerCards.length; i++){
+        if(Dealer.dealerCards[i].value === "A"){
+          return true;
+        }
+      } return false;
+  },
   dealFirstCards: function(){
     //deal cards
     //give player two cards
@@ -100,7 +114,7 @@ var Dealer = {
       console.log("cards left in deck", Deck.shuffledDeck.length);
 
       //create new card element for dealer cards area on table and show it
-      dealerCardsElement.append($("<p>").text(newCardTake.value));
+      dealerCardsElement.append($("<div>").text(newCardTake.value));
 
       //add value to dealerCurrentSum
       this.cardSum += newCardTake.realValue;
@@ -110,7 +124,9 @@ var Dealer = {
       console.log("dealer new sum", this.cardSum);
     },
   dealerHitOrStand: function(){
+    console.log("entered hit or stand function");
     if(this.cardSum<17){
+      console.log("entered IF hit or stand function");
       this.hitDealer();
     }
     console.log("stand/done");
@@ -133,22 +149,22 @@ var Game = {
   },
   displayFirstCards: function(){
     //display player cards
-    $("#playerCards").text(Player.playerCards[0].value + " " + Player.playerCards[1].value);
+    $("#playerCards").text(Player.playerCards[0].value + Player.playerCards[0].suit + " " + Player.playerCards[1].value + Player.playerCards[1].suit);
     //display dealer cards
-    $("#dealerCards").text(Dealer.dealerCards[0].value);
+    $("#dealerCards").text(Dealer.dealerCards[0].value + Dealer.dealerCards[0].suit);
   },
   displayDealerSecondCard: function(){
-    $("#dealerCards").text(Dealer.dealerCards[0].value + " " + Dealer.dealerCards[1].value);
+    $("#dealerCards").text(Dealer.dealerCards[0].value + Dealer.dealerCards[0].suit + " " + Dealer.dealerCards[1].value + Dealer.dealerCards[1].suit);
   },
-  calculateFirstSum: function(){
-    var cardVal1 = Player.playerCards[0].realValue;
-    var cardVal2 = Player.playerCards[1].realValue;
-    var cardVal3 = Dealer.dealerCards[0].realValue;
-    var cardVal4 = Dealer.dealerCards[1].realValue;
-    Player.cardSum = cardVal1 + cardVal2;
-    Dealer.cardSum = cardVal3 + cardVal4;
-    console.log("player sum", Player.cardSum);
+  calculateSum: function(){
+    for(var i = 0; i<Player.playerCards.length; i++){
+      Player.cardSum += Player.playerCards[i].realValue;
+    }
+    for(var j = 0; j<Dealer.dealerCards.length; j++){
+      Dealer.cardSum += Dealer.dealerCards[j].realValue;
+    }
     console.log("dealer sum", Dealer.cardSum);
+    console.log("player sum", Player.cardSum);
   },
   checkForWinStatus: function(){
     if(Player.cardSum === Dealer.cardSum){
@@ -166,33 +182,61 @@ var Game = {
       Player.bankAmount += Player.currentBet*2;
     } else if(this.winStatus === "loss"){
       Player.bankAmount -= Player.currentBet;
+    } else if(this.winStatus === "blackjack"){
+      Player.bankAmount += Player.currentBet*1.5;
+    }
+  },
+  checkForBlackJackOrTie: function(){
+    if(Player.cardSum === 21 && Dealer.cardSum === 21){
+      this.winStatus = "tie";
+      return "tie";
+    } else if (Player.cardSum === 21 || Dealer.cardSum === 21){
+      if(Player.cardSum === 21){
+        this.winStatus = "blackjack";
+        return "blackjack";
+      } else {
+        this.winStatus = "loss";
+        return "dealerwin";
+      }
+    } else {
+      return false;
     }
   },
   play: function(){
     Player.postBankAmount(); //shows bank amount on game table
     Player.makeBet(); //show bet amount on table and updates currentBet
+    Player.bankAmount -= Player.currentBet;
+    Player.postBankAmount();
     Dealer.dealFirstCards(); //two cards given to dealer and
     Game.displayFirstCards(); //displays player cards and first dealer card
-    Game.calculateFirstSum(); //calculates sum of player and dealer two cards only
+    Game.calculateSum(); //calculates sum of player and dealer two cards only
     Player.playerHitOrStand(); //returns "hit" or "stand"
     Game.displayDealerSecondCard();
-    // Get 21 points on the player's first two cards (called a blackjack), without a dealer blackjack
-    //continue play
-    if (Player.cardSum < 21 && Dealer.cardSum < 21) {
-      if(Player.hitStandStatus === "hit" && Dealer.cardSum < 17){
-
-      }
-      if(Player.hitStandStatus === "stand" && Dealer.cardSum < 17){
-
-      }
-      if(Player.hitStandStatus === "hit" && Dealer.cardSum >= 17){
-
-      }
-      if(Player.hitStandStatus === "stand" && Dealer.cardSum >= 17){
-
-      }
+    //Discussed with Yuriy 10/16/15, I'm going to try implementing the idea of ACE being 11 in the array and subtracting 10 if sum of card in hand is over 21, this really simplifies the play mechanics.
+    //Discussed with Ross 10/16/15: strategy for function calls in play function
+    //
+    if(Game.checkForBlackJackOrTie()==="tie" || Game.checkForBlackJackOrTie()==="blackjack" || Game.checkForBlackJackOrTie()==="dealerwin" ){
+      console.log("round over due to tie or player/dealer blackjack");
+      return "round over";
     } else {
-      checkForWinStatus();
+      if(Player.playerHitOrStand() === "stand"){
+        while(Dealer.cardSum < 17){
+          console.log("entered while loop");
+          Dealer.dealerHitOrStand();
+          Game.calculateSum();
+          if(Dealer.cardSum === 21){
+            this.winStatus = "loss";
+            return "round over";
+          }
+        }
+        // dealer hits cards until dealer sum 17 or dealer busts, if bust, player wins
+        // Dealer.checkForAces();
+        // check for aces after each dealer hit
+
+      }
+      //  while(playerHitOrStand === "hit" || dealerbust === false || dealer){
+      // //  deal new card
+      // }
     }
   },
   helpScreen: function(){
@@ -221,3 +265,27 @@ Game.resetVariables();
 // } else if(Player.hitStandStatus === "hit"){
 //   Game.checkForWinStatus();
 //   //display new player card
+
+// if(Player.cardSum < 12 && (Player.playerCards[0].value === "ACE" || Player.playerCards[1].value === "ACE")){
+//   if(Player.playerCards[0].value === "ACE"){
+//     Player.playerCards[0].realValue = 11;
+//   } else if (Player.playerCards[1].value === "ACE"){
+//     Player.playerCards[1].realValue = 11;
+//   }
+// }
+// if (Player.cardSum < 21 && Dealer.cardSum < 21) {
+//   if(Player.hitStandStatus === "hit" && Dealer.cardSum < 17){
+//
+//   }
+//   if(Player.hitStandStatus === "stand" && Dealer.cardSum < 17){
+//
+//   }
+//   if(Player.hitStandStatus === "hit" && Dealer.cardSum >= 17){
+//
+//   }
+//   if(Player.hitStandStatus === "stand" && Dealer.cardSum >= 17){
+//
+//   }
+// } else {
+//   checkForWinStatus();
+// }
