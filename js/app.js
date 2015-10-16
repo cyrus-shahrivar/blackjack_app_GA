@@ -4,8 +4,11 @@
 //
 //
 
+//DOCUMENT READY
+//$(function(){}); onload function TO WRAP AROUND all
 //DECK OBJECT
 var Deck = {
+    numberOfDecks: 1,
     deck: [],
     shuffledDeck: [],
     spentCardStack: [],
@@ -31,106 +34,151 @@ var Deck = {
     }
 };
 
-// Game Play
-//set bank amount
-var bankAmount = 1000;
-$("#bankAmount").text(bankAmount);
-
-//create deck and shuffle
-Deck.createDeck();
-Deck.shuffleDeck();
-
-//make bet
-var betAmount = prompt("Make a bet");
-$("#betAmount").text(betAmount);
-
-//deal cards
-//give player two cards
-var playerCards = [];
-var cardTake1 = Deck.shuffledDeck[Deck.shuffledDeck.length - 1];
-var cardTake2 = Deck.shuffledDeck[Deck.shuffledDeck.length - 2];
-playerCards.push(cardTake1);
-playerCards.push(cardTake2);
-
-//give computer two cards
-var dealerCards = [];
-var cardTake3 = Deck.shuffledDeck[Deck.shuffledDeck.length - 3];
-var cardTake4 = Deck.shuffledDeck[Deck.shuffledDeck.length - 4];
-dealerCards.push(cardTake3);
-dealerCards.push(cardTake4);
-
-//need to pop cards too
-Deck.shuffledDeck.pop();
-Deck.shuffledDeck.pop();
-Deck.shuffledDeck.pop();
-Deck.shuffledDeck.pop();
-
-//display all cards
-//display player cards
-$("#playerCards").text(playerCards[0].value + " " + playerCards[1].value);
-//display dealer cards
-$("#dealerCards").text(dealerCards[0].value + " " + dealerCards[1].value);
-
-//check for blackjacks
-var cardVal1 = playerCards[0].realValue;
-var cardVal2 = playerCards[1].realValue;
-var cardVal3 = dealerCards[0].realValue;
-var cardVal4 = dealerCards[1].realValue;
-var playerCurrentSum = cardVal1 + cardVal2;
-var dealerCurrentSum = cardVal3 + cardVal4;
-
-if(playerCurrentSum === 21 && dealerCurrentSum !== 21){
-  //return "player wins blackjack";
-  console.log("player wins blackjack");
-}
-console.log("player sum", playerCurrentSum);
-console.log("dealer sum", dealerCurrentSum);
-
-
-//choose either hit or stand
-//player choice
-var hitOrStandPlayer = prompt("Hit or Stand?");
-//var dealerChoices = ["hit", "stand"];--OLD
-
-//dealer choice
-// var hitOrStandDealer = Math.floor(dealerChoices.length*Math.random()); --OLD
-var hitDealer = function(){
-  //select dealer cards location
-  var dealerCardsElement = $("#dealerCards");
-
-  //take the last card from the end of the deck
-  var newCardTake = Deck.shuffledDeck[Deck.shuffledDeck.length-1];
-  console.log("hit dealer card value", newCardTake.realValue);
-
-  //add that card to the dealer cards array
-  dealerCards.push(newCardTake);
-
-  //remove the last card in the deck "the top of the card stack"
-  Deck.shuffledDeck.pop();
-  console.log("cards left in deck", Deck.shuffledDeck.length);
-
-  //create new card element for dealer cards area on table and show it
-  dealerCardsElement.append($("<p>").text(newCardTake.value));
-
-  //add value to dealerCurrentSum
-  dealerCurrentSum += newCardTake.realValue;
-
-  //return dealerCurrentSum
-  //return dealerCurrentSum;
-  console.log("dealer new sum", dealerCurrentSum);
-};
-
-var hitOrStandDealer = function(dealerCurrentSum){
-  if(dealerCurrentSum<17){
-    hitDealer();
+//PLAYER OBJECT
+var Player = {
+  //set bank amount
+  bankAmount: 1000,
+  playerCards: [],
+  currentBet: 0,
+  hitStandStatus: "",
+  cardSum: 0,
+  postBankAmount: function(){
+    //post to html
+    $("#bankAmount").text(this.bankAmount);
+  },
+  makeBet: function(){
+    //make bet
+    var betAmount = prompt("Make a bet");
+    $("#betAmount").text(betAmount);
+    this.currentBet = betAmount;
+  },
+  playerHitOrStand: function(){
+    //player choice
+    var status = this.hitStandStatus = prompt("Hit or Stand?");
+    return status;
   }
-  //return "stand";
-  console.log("computer stands or is done");
 };
-hitOrStandDealer(dealerCurrentSum);
+
+var Dealer = {
+  dealerCards: [],
+  hitStandStatus: "",
+  cardSum: 0,
+  dealFirstCards: function(){
+    //deal cards
+    //give player two cards
+    var cardTake1 = Deck.shuffledDeck[Deck.shuffledDeck.length - 1];
+    var cardTake2 = Deck.shuffledDeck[Deck.shuffledDeck.length - 2];
+    Player.playerCards.push(cardTake1);
+    Player.playerCards.push(cardTake2);
+
+    //give computer two cards
+    var cardTake3 = Deck.shuffledDeck[Deck.shuffledDeck.length - 3];
+    var cardTake4 = Deck.shuffledDeck[Deck.shuffledDeck.length - 4];
+    this.dealerCards.push(cardTake3);
+    this.dealerCards.push(cardTake4);
+
+    //need to pop cards too
+    Deck.shuffledDeck.pop();
+    Deck.shuffledDeck.pop();
+    Deck.shuffledDeck.pop();
+    Deck.shuffledDeck.pop();
+  },
+  hitDealer: function(){
+      //select dealer cards location
+      var dealerCardsElement = $("#dealerCards");
+
+      //take the last card from the end of the deck
+      var newCardTake = Deck.shuffledDeck[Deck.shuffledDeck.length-1];
+      console.log("hit dealer card value", newCardTake.realValue);
+
+      //add that card to the dealer cards array
+      this.dealerCards.push(newCardTake);
+
+      //remove the last card in the deck "the top of the card stack"
+      Deck.shuffledDeck.pop();
+      console.log("cards left in deck", Deck.shuffledDeck.length);
+
+      //create new card element for dealer cards area on table and show it
+      dealerCardsElement.append($("<p>").text(newCardTake.value));
+
+      //add value to dealerCurrentSum
+      this.cardSum += newCardTake.realValue;
+
+      //return dealerCurrentSum
+      //return dealerCurrentSum;
+      console.log("dealer new sum", this.cardSum);
+    },
+  dealerHitOrStand: function(){
+    if(this.cardSum<17){
+      this.hitDealer();
+    }
+    console.log("stand/done");
+    return "stand/done";
+    }
+};
+
+var Game = {
+  displayFirstCards: function(){
+    //display player cards
+    $("#playerCards").text(Player.playerCards[0].value + " " + Player.playerCards[1].value);
+    //display dealer cards
+    $("#dealerCards").text(Dealer.dealerCards[0].value);
+  },
+  displayDealerSecondCard: function(){
+    $("#dealerCards").text(Dealer.dealerCards[0].value + " " + Dealer.dealerCards[1].value);
+  },
+  calculateFirstSum: function(){
+    var cardVal1 = Player.playerCards[0].realValue;
+    var cardVal2 = Player.playerCards[1].realValue;
+    var cardVal3 = Dealer.dealerCards[0].realValue;
+    var cardVal4 = Dealer.dealerCards[1].realValue;
+    Player.cardSum = cardVal1 + cardVal2;
+    Dealer.cardSum = cardVal3 + cardVal4;
+    console.log("player sum", Player.cardSum);
+    console.log("dealer sum", Dealer.cardSum);
+  },
+  checkForEndOfRound: function(){
+
+  }
+};
+
+// Game Play
+Deck.createDeck(); //intializes ordered deck of cards
+Deck.shuffleDeck();
+Player.postBankAmount();
+Player.makeBet();
+Dealer.dealFirstCards(); //two cards given to dealer and
+Game.displayFirstCards();
+Game.calculateFirstSum(); //calculates sum of player and computers two cards only
+//returns "hit" or "stand"
+Player.hitStandStatus = Player.playerHitOrStand();
+if(Player.hitStandStatus === "stand"){
+  //display second dealer card
+  Game.displayDealerSecondCard();
+  if(Game.checkForEndOfRound() !== true){
+    var dealerMove = 0;
+    do{
+      dealerMove = Dealer.dealerHitOrStand();
+    } while (dealerMove !== "stand/done");
+  }
+} else if(Player.hitStandStatus === "hit"){
+  //display second dealer card
+  Game.displayDealerSecondCard();
+  Game.checkForEndOfRound();
+  //display new player card
+}
+
+
+
+// - Game Object
+//  - gameHelpMenu() - event listener
+//  - endGame() - event listener
+
+
 
 
 //check for win/tie - evaluate choices
+
 // Get 21 points on the player's first two cards (called a blackjack), without a dealer blackjack
 // Reach a final score higher than the dealer without exceeding 21; or
 // Let the dealer draw additional cards until his or her hand exceeds 21.
@@ -143,42 +191,3 @@ hitOrStandDealer(dealerCurrentSum);
 
 //if win, add to bank
 //if lose, deduct from bank
-
-
-
-
-
-
-
-
-// - Deck Object
-//  - deal()
-//  - numberOfDecks - optional
-// - Dealer Object
-//  - hitMe()
-//  - standMe()
-//  - currentHand
-//  - houseBank
-// - Player Object
-//  - hitMe()
-//  - standMe()
-//  - currentHand
-//  - bet()
-//  - currentBet
-//  - currentBank
-// - Table Object
-//  - setTable()
-//  - currentPlayer
-// - Game Object
-//  - gameHelpMenu()
-//  - startGame()
-//  - continueGame()
-//  - endGame()
-//  - checkWinStatus()
-//  - table
-// - Game Calls
-//  - Game.startGame
-//  - Game.helpMenu
-//  - continue Game unless
-//    - player quits
-//  - Game.endGame
