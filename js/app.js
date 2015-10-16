@@ -6,6 +6,7 @@
 
 //DOCUMENT READY
 //$(function(){}); onload function TO WRAP AROUND all
+
 //DECK OBJECT
 var Deck = {
     numberOfDecks: 1,
@@ -54,11 +55,11 @@ var Player = {
   },
   playerHitOrStand: function(){
     //player choice
-    var status = this.hitStandStatus = prompt("Hit or Stand?");
-    return status;
+    this.hitStandStatus = prompt("Hit or Stand?").toLowerCase();
   }
 };
 
+//DEALER OBJECT
 var Dealer = {
   dealerCards: [],
   hitStandStatus: "",
@@ -117,7 +118,19 @@ var Dealer = {
     }
 };
 
+//GAME OBJECT
 var Game = {
+  winStatus: "",
+  resetVariables: function(){
+    Player.currentBet = 0;
+    Player.playerCards = [];
+    Dealer.dealerCards = [];
+    Player.hitStandStatus = "";
+    Dealer.hitStandStatus = "";
+    Player.cardSum = 0;
+    Dealer.cardSum = 0;
+    Game.winStatus = "";
+  },
   displayFirstCards: function(){
     //display player cards
     $("#playerCards").text(Player.playerCards[0].value + " " + Player.playerCards[1].value);
@@ -137,57 +150,74 @@ var Game = {
     console.log("player sum", Player.cardSum);
     console.log("dealer sum", Dealer.cardSum);
   },
-  checkForEndOfRound: function(){
+  checkForWinStatus: function(){
+    if(Player.cardSum === Dealer.cardSum){
+      this.winStatus = "tie";
+    } else if (Player.cardSum <= 21 && Player.cardSum > Dealer.cardSum){
+      this.winStatus = "win";
+    } else if (Player.cardSum > 21 || Dealer.cardSum > Player.cardSum){
+      this.winStatus = "loss";
+    } else {
+      return false;
+    }
+  },
+  updateBankAmount: function(){
+    if(this.winStatus === "win"){
+      Player.bankAmount += Player.currentBet*2;
+    } else if(this.winStatus === "loss"){
+      Player.bankAmount -= Player.currentBet;
+    }
+  },
+  play: function(){
+    Player.postBankAmount(); //shows bank amount on game table
+    Player.makeBet(); //show bet amount on table and updates currentBet
+    Dealer.dealFirstCards(); //two cards given to dealer and
+    Game.displayFirstCards(); //displays player cards and first dealer card
+    Game.calculateFirstSum(); //calculates sum of player and dealer two cards only
+    Player.playerHitOrStand(); //returns "hit" or "stand"
+    Game.displayDealerSecondCard();
+    // Get 21 points on the player's first two cards (called a blackjack), without a dealer blackjack
+    //continue play
+    if (Player.cardSum < 21 && Dealer.cardSum < 21) {
+      if(Player.hitStandStatus === "hit" && Dealer.cardSum < 17){
 
+      }
+      if(Player.hitStandStatus === "stand" && Dealer.cardSum < 17){
+
+      }
+      if(Player.hitStandStatus === "hit" && Dealer.cardSum >= 17){
+
+      }
+      if(Player.hitStandStatus === "stand" && Dealer.cardSum >= 17){
+
+      }
+    } else {
+      checkForWinStatus();
+    }
+  },
+  helpScreen: function(){
+    //Help Text HERE
+    console.log("");
+    //w event listener somewhere
   }
 };
 
-// Game Play
+// Game Intialization
 Deck.createDeck(); //intializes ordered deck of cards
 Deck.shuffleDeck();
-Player.postBankAmount();
-Player.makeBet();
-Dealer.dealFirstCards(); //two cards given to dealer and
-Game.displayFirstCards();
-Game.calculateFirstSum(); //calculates sum of player and computers two cards only
-//returns "hit" or "stand"
-Player.hitStandStatus = Player.playerHitOrStand();
-if(Player.hitStandStatus === "stand"){
-  //display second dealer card
-  Game.displayDealerSecondCard();
-  if(Game.checkForEndOfRound() !== true){
-    var dealerMove = 0;
-    do{
-      dealerMove = Dealer.dealerHitOrStand();
-    } while (dealerMove !== "stand/done");
-  }
-} else if(Player.hitStandStatus === "hit"){
-  //display second dealer card
-  Game.displayDealerSecondCard();
-  Game.checkForEndOfRound();
-  //display new player card
-}
+// Game Play
+Game.play();
+Game.updateBankAmount();
+Game.resetVariables();
 
-
-
-// - Game Object
-//  - gameHelpMenu() - event listener
-//  - endGame() - event listener
-
-
-
-
-//check for win/tie - evaluate choices
-
-// Get 21 points on the player's first two cards (called a blackjack), without a dealer blackjack
-// Reach a final score higher than the dealer without exceeding 21; or
-// Let the dealer draw additional cards until his or her hand exceeds 21.
-// if( D<17) (D must hit)
-// if (P<=21 && P>D) if(P=21)(return P wins, "Blackjack") (return P wins)
-// if (P>21 && P<D) (return D wins)
-// if(D>21 || D<P) ( return P wins)
-// if(P=D)(return TIE)
-
-
-//if win, add to bank
-//if lose, deduct from bank
+//CODE GRAVEYARD
+// if(Player.hitStandStatus === "stand"){
+//   if(Game.checkForWinStatus() !== true){
+//     var dealerMove = 0;
+//     do{
+//       dealerMove = Dealer.dealerHitOrStand();
+//     } while (dealerMove !== "stand/done");
+//   }
+// } else if(Player.hitStandStatus === "hit"){
+//   Game.checkForWinStatus();
+//   //display new player card
