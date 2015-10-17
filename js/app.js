@@ -47,10 +47,9 @@ var Player = {
   hitStandStatus: "",
   cardSum: 0,
   numAces: 0,
-  drawPlayerCoins: function(){
+  coinDrawer: function(){
     var playerCoins = $("#playerCoins");
-    console.log(playerCoins);
-    for (var i=0; i<50; i++){
+    for (var i=0; i<(this.bankAmount/25); i++){
       var randPlaceTop = 520 + Math.floor(25*Math.random());
       var randPlaceLeft = 190 + Math.floor(100*Math.random());
       var coin = $("<div>");
@@ -61,6 +60,17 @@ var Player = {
       playerCoins.append(coin);
     }
   },
+  drawPlayerCoins: function(){
+    if(this.currentBet > 0){
+      //remove all coins
+      var allCoins = $(".playerCoins");
+      allCoins.remove();
+      //redraw coins
+      this.coinDrawer();
+    } else if (this.currentBet === 0){
+      this.coinDrawer();
+    }
+  },
   postBankAmount: function(){
     //post to html
     $("#bankAmount").text("$" + " " + this.bankAmount);
@@ -68,6 +78,9 @@ var Player = {
   makeBet: function(){
     //make bet
     var betAmount = prompt("Make a bet");
+    if(betAmount > this.bankAmount){
+      return this.makeBet(); //recursive call
+    }
     this.currentBet = betAmount;
     $("#alert").text("Current bet: " + "$ " + betAmount);
   },
@@ -111,10 +124,11 @@ var Dealer = {
   hitStandStatus: "",
   cardSum: 0,
   numAces: 0,
+  houseBank: 12500,
   drawHausCoins: function(){
     var houseCoins = $("#houseCoins");
     console.log(houseCoins);
-    for (var i=0; i<500; i++){
+    for (var i=0; i<(this.houseBank/25); i++){
       var randPlaceTop = 70 + Math.floor(100*Math.random());
       var randPlaceLeft = 190 + Math.floor(100*Math.random());
       var coin = $("<div>");
@@ -329,6 +343,7 @@ var Game = {
     Player.makeBet(); //show bet amount on table and updates currentBet
     Player.bankAmount -= Player.currentBet;
     Player.postBankAmount();
+    Player.drawPlayerCoins();
     Dealer.dealFirstCards(); //two cards given to dealer and
     Game.displayFirstCards(); //displays player cards and first dealer card
     Game.calculateDealerSum(); //calculates sum of dealer two cards only
@@ -411,7 +426,7 @@ $("#gameTitle").click(function(){
   Deck.shuffleDeck();
   // Game Play
   var quit = null;
-  while(quit !== "quit" || playAgainClick===true){
+  while(quit !== "quit"){
     Game.clearTableElements();
     Game.play();
     Game.updateBankAmountAndAlert();
