@@ -11,8 +11,17 @@ body {
   position: fixed;
 }
 
+.playerCoins {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  border: 4px dashed white;
+  background-color: gold;
+  position: fixed;
+}
+
 #container {
-  border: 6px dotted;
+  border: 6px dashed;
   border-color: whitesmoke;
   border-radius: 100px;
   height: 615px;
@@ -24,10 +33,11 @@ body {
 
 
 #alert {
-  font-size: 30px;
+  font-size: 17px;
   position: fixed;
   top: 364px;
-  left: 300px;
+  left: 250px;
+  width: 380px;
 }
 
 #dealer {
@@ -63,52 +73,67 @@ body {
   width: 100px;
   height: 100px;
   border-radius: 100%;
-  border: 2px dashed white;
+  border: 2px solid white;
   position: fixed;
   top: 400px;
   left: 160px;
 }
 
-#betTitle {
+#dealerLabel {
+  display: inline;
   position: fixed;
-  top: 495px;
-  left: 178px;
+  top: 66px;
+  left: 441px;
+  width: 20px;
+  overflow-wrap: break-word;
   font-size: 20px;
-  border: 3px solid goldenrod;
-  background-color: #EAD149;
-  padding: 8px;
+  color: white;
+  z-index: -10;
 }
 
-#betTitle:hover {
-  border: 3px outset goldenrod;
-  background-color: gold;
+#playerLabel {
+  display: inline;
+  position: fixed;
+  top: 445px;
+  left: 441px;
+  width: 20px;
+  overflow-wrap: break-word;
+  font-size: 20px;
+  color: white;
+  z-index: -10;
 }
 
-#betAmount {
-  position: fixed;
-  top: 506px;
-  left: 260px;
-  font-size: 20px;
-}
+/* for card divs later
+border: 2px solid;
+text-align: center;
+height: 100px;
+text-align: left;
+background-color: rgba(243, 59, 59, 0.63);
+margin: 10px;
+color: white;
+padding: 20px;*/
 
 #bankTitle {
   position: fixed;
-  top: 545px;
-  left: 170px;
+  top: 580px;
+  left: 195px;
   font-size: 20px;
-  border: 3px solid goldenrod;
-  background-color: #EAD149;
-  padding: 8px;
 }
 
-#bankTitle:hover {
-  border: 3px outset goldenrod;
-  background-color: gold;
-}
 
 #bankAmount {
   position: fixed;
-  top: 555px;
+  top: 580px;
   left: 260px;
   font-size: 20px;
+}
+
+#betTitle {
+  width: 20px;
+  text-align: center;
+  height: 60px;
+  display: inline-flex;
+  position: fixed;
+  top: 400px;
+  left: 191px;
 }

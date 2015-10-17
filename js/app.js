@@ -7,22 +7,7 @@
 //DOCUMENT READY
 $(document).ready(function(){
 
-var hausCoins = function(){
-  var houseCoins = $("#houseCoins");
-  console.log(houseCoins);
-  for (var i=0; i<20; i++){
-    var randPlaceTop = 100 + Math.floor(40*Math.random());
-    var randPlaceLeft = 170 + Math.floor(50*Math.random());
-    var coin = $("<div>");
-    coin.addClass("houseCoins");
-    coin.css("top", randPlaceTop + "px");
-    coin.css("left", randPlaceLeft + "px");
-    coin.css("box-shadow", "10px 5px 5px black");
-    houseCoins.append(coin);
-  }
-};
 
-hausCoins();
 
 //DECK OBJECT
 var Deck = {
@@ -62,6 +47,20 @@ var Player = {
   hitStandStatus: "",
   cardSum: 0,
   numAces: 0,
+  drawPlayerCoins: function(){
+    var playerCoins = $("#playerCoins");
+    console.log(playerCoins);
+    for (var i=0; i<50; i++){
+      var randPlaceTop = 520 + Math.floor(25*Math.random());
+      var randPlaceLeft = 190 + Math.floor(100*Math.random());
+      var coin = $("<div>");
+      coin.addClass("playerCoins");
+      coin.css("top", randPlaceTop + "px");
+      coin.css("left", randPlaceLeft + "px");
+      coin.css("box-shadow", "10px 5px 5px black");
+      playerCoins.append(coin);
+    }
+  },
   postBankAmount: function(){
     //post to html
     $("#bankAmount").text("$" + " " + this.bankAmount);
@@ -69,8 +68,8 @@ var Player = {
   makeBet: function(){
     //make bet
     var betAmount = prompt("Make a bet");
-    $("#betAmount").text("$" + " " + betAmount);
     this.currentBet = betAmount;
+    $("#alert").text("Current bet: " + "$ " + betAmount);
   },
   playerHitOrStand: function(){
     //player choice
@@ -112,6 +111,20 @@ var Dealer = {
   hitStandStatus: "",
   cardSum: 0,
   numAces: 0,
+  drawHausCoins: function(){
+    var houseCoins = $("#houseCoins");
+    console.log(houseCoins);
+    for (var i=0; i<500; i++){
+      var randPlaceTop = 70 + Math.floor(100*Math.random());
+      var randPlaceLeft = 190 + Math.floor(100*Math.random());
+      var coin = $("<div>");
+      coin.addClass("houseCoins");
+      coin.css("top", randPlaceTop + "px");
+      coin.css("left", randPlaceLeft + "px");
+      coin.css("box-shadow", "10px 5px 5px black");
+      houseCoins.append(coin);
+    }
+  },
   checkForAces: function(){
       for(var i = 0; i<Dealer.dealerCards.length; i++){
         if(Dealer.dealerCards[i].value === "A"){
@@ -170,6 +183,7 @@ var Dealer = {
 
 //GAME OBJECT
 var Game = {
+  winLossAmount: 0,
   winStatus: "",
   resetVariables: function(){
     Player.currentBet = 0;
@@ -185,7 +199,6 @@ var Game = {
     $("#alert").text("");
     $("#player").text("");
     $("#dealer").text("");
-    $("#betAmount").text("");
   },
   displayFirstCards: function(){
     //display player cards
@@ -214,30 +227,22 @@ var Game = {
     Dealer.cardSum = placeholder1;
     console.log("dealer sum", Dealer.cardSum);
   },
-  alertWinStatus: function(){
-    console.log("round status", this.winStatus);
-    if(this.winStatus === "win"){
-      $("#alert").text("WON ROUND!");
-    } else if(this.winStatus === "loss"){
-      $("#alert").text("LOST ROUND!");
-    } else if(this.winStatus === "blackjack"){
-      Player.bankAmount += Player.currentBet*1.5;
-      $("#alert").text("WON ROUND! GOT BLACKJACK!");
-    } else {
-      $("#alert").text("TIE!");
-    }
-  },
-  updateBankAmount: function(){
+  updateBankAmountAndAlert: function(){
     console.log("updating bank");
     if(this.winStatus === "win"){
       Player.bankAmount += Player.currentBet*2;
-      $("#alert").text("WON ROUND!");
+      this.winLossAmount = Player.currentBet*2;
+      $("#alert").text("WON ROUND! WON " + "$ " + this.winLossAmount);
     } else if(this.winStatus === "loss"){
       // Player.bankAmount -= Player.currentBet; just lose bet, not 2nd deduct
-      $("#alert").text("LOST ROUND!");
+      this.winLossAmount = Player.currentBet;
+      $("#alert").text("LOST ROUND! LOST " + "$ " + this.winLossAmount);
     } else if(this.winStatus === "blackjack"){
       Player.bankAmount += Player.currentBet*1.5;
-      $("#alert").text("WON ROUND! GOT BLACKJACK!");
+      this.winLossAmount = Player.currentBet*1.5;
+      $("#alert").text("WON ROUND! GOT BLACKJACK! WON " + "$ " + this.winLossAmount);
+    } else {
+      $("#alert").text("TIE! LOST NOTHING!");
     }
     Player.postBankAmount();
   },
@@ -318,6 +323,8 @@ var Game = {
       }
   },
   play: function(){
+    Dealer.drawHausCoins();
+    Player.drawPlayerCoins();
     Player.postBankAmount(); //shows bank amount on game table
     Player.makeBet(); //show bet amount on table and updates currentBet
     Player.bankAmount -= Player.currentBet;
@@ -393,19 +400,34 @@ var Game = {
   }
 };
 
+// var Masterplay = {
+//
+// };
+
 // Game Intialization
-Deck.createDeck(); //intializes ordered deck of cards
-Deck.shuffleDeck();
-// Game Play
-var quit = null;
-while(quit !== "quit"){
-  Game.clearTableElements();
-  Game.play();
-  Game.alertWinStatus();
-  Game.updateBankAmount();
-  Game.resetVariables();
-  quit = prompt("Quit or continue?").toLowerCase();
-}
+$("#alert").text("CLICK THE BLACKJACK LOGO TO PLAY!");
+$("#gameTitle").click(function(){
+  Deck.createDeck(); //intializes ordered deck of cards
+  Deck.shuffleDeck();
+  // Game Play
+  var quit = null;
+  while(quit !== "quit" || playAgainClick===true){
+    Game.clearTableElements();
+    Game.play();
+    Game.updateBankAmountAndAlert();
+    //Game.alertWinStatus();
+    if(Player.bankAmount <= 0){
+      $("#alert").text("LOST ALL MONEY! GAME OVER!");
+      // var playAgain = setInterval(function(){
+      //   $("#alert").text("CLICK BLACKJACK LOGO TO PLAY AGAIN!");
+      // }, 2000);
+      quit = "quit";
+    } else {
+      Game.resetVariables();
+      quit = prompt("Quit or continue?").toLowerCase();
+    }
+  }
+});
 //Game.credits();
 }); //END OF DOCUMENT READY
 //CODE GRAVEYARD
@@ -460,7 +482,26 @@ while(quit !== "quit"){
   //     return false;
   //   }
   // },
-            // if(Player.cardSum === Dealer.cardSum){
-            //   this.winStatus = "tie";
-            //   return "round over";
-            // }
+  // if(Player.cardSum === Dealer.cardSum){
+  //   this.winStatus = "tie";
+  //   return "round over";
+  // }
+  // alertWinStatus: function(){
+  //   console.log("round status", this.winStatus);
+  //   if(this.winStatus === "win"){
+  //     $("#alert").text("WON ROUND!");
+  //   } else if(this.winStatus === "loss"){
+  //     $("#alert").text("LOST ROUND!");
+  //   } else if(this.winStatus === "blackjack"){
+  //     Player.bankAmount += Player.currentBet*1.5;
+  //     $("#alert").text("WON ROUND! GOT BLACKJACK!");
+  //   } else {
+  //     $("#alert").text("TIE!");
+  //   }
+  // },
+  // var containerBorderChange = function(){
+  //   var gold = setInterval(function(){$("#container").css("border-color", "gold");},1000);
+  //   var whitesmoke = setInterval(function(){$("#container").css("border-color", "whitesmoke");},1000);
+  // };
+  //
+  // containerBorderChange();
