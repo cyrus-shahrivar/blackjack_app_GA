@@ -2,6 +2,25 @@ body {
   background-color: green;
 }
 
+#container {
+  border: 6px dotted;
+  border-color: whitesmoke;
+  border-radius: 100px;
+  height: 615px;
+  width: 528px;
+  position: fixed;
+  left: 92px;
+  top: 2px
+}
+
+
+#alert {
+  font-size: 30px;
+  position: fixed;
+  top: 364px;
+  left: 300px;
+}
+
 #dealer {
   height: 200px;
   width: 100px;
@@ -9,6 +28,7 @@ body {
   position: relative;
   top: 10px;
   left: 300px;
+  font-size: 20px;
 }
 
 #player {
@@ -18,6 +38,7 @@ body {
   position: relative;
   top: 200px;
   left: 300px;
+  font-size: 20px;
 }
 
 #gameTitle {
@@ -41,25 +62,28 @@ body {
 
 #betTitle {
   position: fixed;
-  top: 510px;
-  left: 150px;
-
+  top: 495px;
+  left: 170px;
+  font-size: 20px;
 }
 
 #betAmount {
   position: fixed;
-  top: 530px;
-  left: 150px;
+  top: 520px;
+  left: 170px;
+  font-size: 18px;
 }
 
 #bankTitle {
   position: fixed;
-  top: 550px;
-  left: 150px;
+  top: 545px;
+  left: 170px;
+  font-size: 20px;
 }
 
 #bankAmount {
   position: fixed;
   top: 570px;
-  left: 150px;
+  left: 170px;
+  font-size: 18px;
 }
