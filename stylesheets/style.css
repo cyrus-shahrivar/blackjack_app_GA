@@ -2,6 +2,15 @@ body {
   background-color: green;
 }
 
+.houseCoins {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  border: 4px dashed white;
+  background-color: gold;
+  position: fixed;
+}
+
 #container {
   border: 6px dotted;
   border-color: whitesmoke;
@@ -57,21 +66,29 @@ body {
   border: 2px dashed white;
   position: fixed;
   top: 400px;
-  left: 150px;
+  left: 160px;
 }
 
 #betTitle {
   position: fixed;
   top: 495px;
-  left: 170px;
+  left: 178px;
   font-size: 20px;
+  border: 3px solid goldenrod;
+  background-color: #EAD149;
+  padding: 8px;
+}
+
+#betTitle:hover {
+  border: 3px outset goldenrod;
+  background-color: gold;
 }
 
 #betAmount {
   position: fixed;
-  top: 520px;
-  left: 170px;
-  font-size: 18px;
+  top: 506px;
+  left: 260px;
+  font-size: 20px;
 }
 
 #bankTitle {
@@ -79,11 +96,19 @@ body {
   top: 545px;
   left: 170px;
   font-size: 20px;
+  border: 3px solid goldenrod;
+  background-color: #EAD149;
+  padding: 8px;
+}
+
+#bankTitle:hover {
+  border: 3px outset goldenrod;
+  background-color: gold;
 }
 
 #bankAmount {
   position: fixed;
-  top: 570px;
-  left: 170px;
-  font-size: 18px;
+  top: 555px;
+  left: 260px;
+  font-size: 20px;
 }

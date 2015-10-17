@@ -7,6 +7,23 @@
 //DOCUMENT READY
 $(document).ready(function(){
 
+var hausCoins = function(){
+  var houseCoins = $("#houseCoins");
+  console.log(houseCoins);
+  for (var i=0; i<20; i++){
+    var randPlaceTop = 100 + Math.floor(40*Math.random());
+    var randPlaceLeft = 170 + Math.floor(50*Math.random());
+    var coin = $("<div>");
+    coin.addClass("houseCoins");
+    coin.css("top", randPlaceTop + "px");
+    coin.css("left", randPlaceLeft + "px");
+    coin.css("box-shadow", "10px 5px 5px black");
+    houseCoins.append(coin);
+  }
+};
+
+hausCoins();
+
 //DECK OBJECT
 var Deck = {
     numberOfDecks: 1,
