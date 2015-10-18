@@ -8,27 +8,6 @@
 $(document).ready(function(){
 
 
-$("#leftCircle").click(function () {
-  //if betting bet
-  //bet
-  //if hitting hit
-  //hit
-  //if continuing CONTINUE
-  //CONTINUE
-});
-$("#rightCircle").click(function () {
-  //if submitting submit
-  //submit
-  //if standing stand
-  //stand
-  //if quitting quit
-  //quit
-});
-
-
-
-
-
 //DECK OBJECT
 var Deck = {
     numberOfDecks: 1,
@@ -120,29 +99,15 @@ var Player = {
     //post to html
     $("#bankAmount").text("$" + " " + this.bankAmount);
   },
-//   betting: function () {
-//     var submit = false;
-//     var betTotal = 0;
-//     $("#leftCircle").click(function () {
-//          betTotal += 25;
-//     });
-//     $("#rightCircle").click(function(){
-//        submit = true;
-//     });
-//     while(submit === false){
-//       var timeout = setTimeout(function(){console.log("waiting for bet submission");}, 1000);
-//     }
-//     return betTotal;
-// },
   makeBet: function(){
     //make bet
-    var betAmount = prompt("make a bet");
-    //var betAmount = this.betting();
-    if(betAmount > this.bankAmount){
-      return this.makeBet(); //recursive call
+    if(Player.bankAmount > 0){
+      Player.currentBet += 25;
+      console.log(Player.currentBet);
+      $("#alert").text("CURRENT BET: $ " + Player.currentBet);
+      Player.bankAmount -= 25;
+      Player.postBankAmount();
     }
-    this.currentBet = betAmount;
-    $("#alert").text("Current bet: " + "$ " + betAmount);
   },
   playerHitOrStand: function(){
     //player choice
@@ -150,6 +115,7 @@ var Player = {
     return this.hitStandStatus;
   },
   checkForAces: function(){
+    this.numAces = 0;
       for(var i = 0; i<Player.playerCards.length; i++){
         if(Player.playerCards[i].value === "A"){
           this.numAces += 1;
@@ -274,8 +240,8 @@ var Game = {
   },
   clearTableElements: function(){
     $("#alert").text("");
-    $("#player").text("");
-    $("#dealer").text("");
+    // $("#player").text("");
+    // $("#dealer").text("");
   },
   displayFirstCards: function(){
     //display player cards
@@ -322,16 +288,17 @@ var Game = {
     if(this.winStatus === "win"){
       Player.bankAmount += Player.currentBet*2;
       this.winLossAmount = Player.currentBet*2;
-      $("#alert").text("WON ROUND! WON " + "$ " + this.winLossAmount);
+      $("#alert").text("YOU WON " + "$ " + this.winLossAmount);
     } else if(this.winStatus === "loss"){
       // Player.bankAmount -= Player.currentBet; just lose bet, not 2nd deduct
       this.winLossAmount = Player.currentBet;
-      $("#alert").text("LOST ROUND! LOST " + "$ " + this.winLossAmount);
+      $("#alert").text("YOU LOST " + "$ " + this.winLossAmount);
     } else if(this.winStatus === "blackjack"){
       Player.bankAmount += Player.currentBet*1.5;
       this.winLossAmount = Player.currentBet*1.5;
-      $("#alert").text("WON ROUND! GOT BLACKJACK! WON " + "$ " + this.winLossAmount);
+      $("#alert").text("BLACKJACK! YOU WON " + "$ " + this.winLossAmount);
     } else {
+      Player.bankAmount += Player.currentBet;
       $("#alert").text("TIE! LOST NOTHING!");
     }
     Player.postBankAmount();
@@ -412,89 +379,89 @@ var Game = {
         return "round over";
       }
   },
-  play: function(){
-    Player.drawBet();
-    Dealer.drawHausCoins();
-    Player.drawPlayerCoins();
-    Player.postBankAmount(); //shows bank amount on game table
-    Player.makeBet(); //show bet amount on table and updates currentBet
-    Player.bankAmount -= Player.currentBet;
-    Player.postBankAmount();
-    Player.drawPlayerCoins();
-    Player.drawBet();
-    Dealer.dealFirstCards(); //two cards given to dealer and
-    Game.displayFirstCards(); //displays player cards and first dealer card
-    Game.calculateDealerSum(); //calculates sum of dealer two cards only
-    Game.calculatePlayerSum(); //calculates sum of player two cards only
+  // play: function(){
+    // Player.drawBet();
+    // Dealer.drawHausCoins();
+    // Player.drawPlayerCoins();
+    // Player.postBankAmount(); //shows bank amount on game table
+    // Player.makeBet(); //show bet amount on table and updates currentBet
+    // Player.bankAmount -= Player.currentBet;
+    // Player.postBankAmount();
+    // Player.drawPlayerCoins();
+    // Player.drawBet();
+    // Dealer.dealFirstCards(); //two cards given to dealer and
+    // Game.displayFirstCards(); //displays player cards and first dealer card
+    // Game.calculateDealerSum(); //calculates sum of dealer two cards only
+    // Game.calculatePlayerSum(); //calculates sum of player two cards only
     //Discussed with Yuriy 10/16/15, I'm going to try implementing the idea of ACE being 11 in the realCardValue array and subtracting 10 if sum of card in hand is over 21, I agree this really simplifies the play mechanics.
     //Discussed with Ross 10/16/15: Discussed various strategies for function calls in play function.  I think I was trying to tackle all the scenarios in one shot, but Ross encouraged me to break up the problem.
     //
-    if(Game.checkForBlackJackOrTie()==="tie" || Game.checkForBlackJackOrTie()==="blackjack" || Game.checkForBlackJackOrTie()==="dealerwin" ){
-      Game.displayDealerSecondCard();
-      console.log("round over due to tie or player/dealer blackjack");
-      return "round over";
-    } else {
-      if(Player.playerHitOrStand() === "stand"){
-        Game.displayDealerSecondCard();
-        Game.playerHasStood();
-        return "round over";
-      } else { //player hits at least once
+    // if(Game.checkForBlackJackOrTie()==="tie" || Game.checkForBlackJackOrTie()==="blackjack" || Game.checkForBlackJackOrTie()==="dealerwin" ){
+    //   Game.displayDealerSecondCard();
+    //   console.log("round over due to tie or player/dealer blackjack");
+    //   return "round over";
+    // } else {
+      // if(Player.playerHitOrStand() === "stand"){
+      //   Game.displayDealerSecondCard();
+      //   Game.playerHasStood();
+      //   return "round over";
+      // } else { //player hits at least once
         ///////////
         //keep on hitting until declare stand || bust
         //if player has not bust and has stood, call Game.playerHasStood
-        while(Player.hitStandStatus === "hit" && Player.cardSum < 21){ //MAY NEED ANOTHER CONDITION FOR WHILE LOOP
-          console.log("player hitting");
-          //player hit MECH
-          Player.playerHit();
-          //calculate sum MECH
-          Game.calculatePlayerSum();
-          console.log("current player card sum", Player.cardSum);
-          //player win (player loss) due to 21
-          if(Player.cardSum === 21){
-            this.winStatus = "win";
-            console.log("round over due to player loss");
-            return "round over";
-          }
-          //complicated scenario --> aces
-          if(Player.cardSum > 21 && Player.checkForAces()===true){
-            console.log("checking aces");
-            Player.cardSum -= (10*Player.numAces);
-            //dealer loss (player win)
-            if(Player.cardSum < 21 && Player.cardSum < Dealer.cardSum){
-              this.winStatus = "loss";
-              console.log("round over due to player win");
-              return "round over";
-            }
-            //player win (dealer loss)
-            if(Player.cardSum < 21 && Player.cardSum > Dealer.cardSum){
-              this.winStatus = "win";
-              console.log("round over due to player loss");
-              return "round over";
-            }
-            //tie
-            if(Player.cardSum < 21 && Player.cardSum === Dealer.cardSum){
-              this.winStatus = "tie";
-              console.log("round over due to tie");
-              return "round over";
-            }
-          }
-          //player loss (dealer win) due to bust, no aces
-          if(Player.cardSum > 21 && Player.checkForAces()===false){
-            this.winStatus = "loss";
-            console.log("round over due to bust");
-            Game.displayDealerSecondCard();
-            return "round over";
-          }
-          Player.hitStandStatus = prompt("Hit or stand?");
-        }
+        // while(Player.hitStandStatus === "hit" && Player.cardSum < 21){ //MAY NEED ANOTHER CONDITION FOR WHILE LOOP
+        //   console.log("player hitting");
+        //   //player hit MECH
+        //   Player.playerHit();
+        //   //calculate sum MECH
+        //   Game.calculatePlayerSum();
+        //   console.log("current player card sum", Player.cardSum);
+        //   //player win (player loss) due to 21
+        //   if(Player.cardSum === 21){
+        //     Game.winStatus = "win";
+        //     console.log("round over due to player loss");
+        //     return "round over";
+        //   }
+        //   //complicated scenario --> aces
+        //   if(Player.cardSum > 21 && Player.checkForAces()===true){
+        //     console.log("checking aces");
+        //     Player.cardSum -= (10*Player.numAces);
+        //     //dealer loss (player win)
+        //     if(Player.cardSum < 21 && Player.cardSum < Dealer.cardSum){
+        //       Game.winStatus = "loss";
+        //       console.log("round over due to player win");
+        //       return "round over";
+        //     }
+        //     //player win (dealer loss)
+        //     if(Player.cardSum < 21 && Player.cardSum > Dealer.cardSum){
+        //       Game.winStatus = "win";
+        //       console.log("round over due to player loss");
+        //       return "round over";
+        //     }
+        //     //tie
+        //     if(Player.cardSum < 21 && Player.cardSum === Dealer.cardSum){
+        //       Game.winStatus = "tie";
+        //       console.log("round over due to tie");
+        //       return "round over";
+        //     }
+        //   }
+        //   //player loss (dealer win) due to bust, no aces
+        //   if(Player.cardSum > 21 && Player.checkForAces()===false){
+        //     Game.winStatus = "loss";
+        //     console.log("round over due to bust");
+        //     Game.displayDealerSecondCard();
+        //     return "round over";
+        //   }
+        //   Player.hitStandStatus = prompt("Hit or stand?");
+        // }
         //player finally stands if no bust
-        Game.displayDealerSecondCard();
-        Game.playerHasStood();
-        return "round over";
-        ///////////
-      }
-    }
-  },
+      //   Game.displayDealerSecondCard();
+      //   Game.playerHasStood();
+      //   return "round over";
+      //   ///////////
+      // }
+  //   }
+  // },
   helpScreen: function(){
     //Help Text HERE
     console.log("");
@@ -513,40 +480,155 @@ var Game = {
   }
 };
 
-// var Masterplay = {
-//
-// };
+var terminationStatus = function(){
+  Game.displayDealerSecondCard();
+  //Game.playerHasStood();
+  Game.updateBankAmountAndAlert();
+};
 
-// Game Intialization
-$("#alert").text("CLICK THE BLACKJACK LOGO TO PLAY!");
-$("#gameTitle").click(function(){
-  Deck.createDeck(); //intializes ordered deck of cards
-  Deck.shuffleDeck();
-  // Game Play
-  var quit = null;
-  while(quit !== "quit"){
+//STEP 1 - PROMPT USER TO CLICK BET BUTTON TO START BETTING
+$("#alert").text("CLICK BET BUTTON TO MAKE YOUR BET");
+
+//STEP 2 - CREATE DECK, SHUFFLE DECK, RENDER COINS, POST INITIAL BANK AMOUNT
+Deck.createDeck(); //create deck
+Deck.shuffleDeck(); //shuffle deck
+Player.drawBet(); //render bet, house, and player coins
+Dealer.drawHausCoins();
+Player.drawPlayerCoins();
+Player.postBankAmount(); //shows bank amount on game table
+
+//STEP 3 - MAKE BET, THEN SUBMIT ON SUBMIT BUTTON BELOW
+$("#makeBetButton").click(Player.makeBet);
+
+//STEP 4 - SUBMIT BET, UPDATE COIN PILES, UPDATE SUM OF TABLE HANDS, CHECK FOR BLACKJACK
+//var quit = null;
+$("#submitBetButton").click(function(){
+  // while(quit !== "quit"){
     if(Deck.shuffledDeck.length <= 10){
       $("#alert").text("NOT ENOUGH CARDS TO PLAY");
-      break;
+      return null;
     }
     Game.clearTableElements();
-    Game.play();
-    Game.updateBankAmountAndAlert();
-    //Game.alertWinStatus();
-    if(Player.bankAmount <= 0){
-      $("#alert").text("LOST ALL MONEY! GAME OVER!");
-      // var playAgain = setInterval(function(){
-      //   $("#alert").text("CLICK BLACKJACK LOGO TO PLAY AGAIN!");
-      // }, 2000);
-      quit = "quit";
+    //Game.play();
+    Player.drawPlayerCoins();
+    Player.drawBet();
+    Dealer.dealFirstCards(); //two cards given to dealer and
+    Game.displayFirstCards(); //displays player cards and first dealer card
+    Game.calculateDealerSum(); //calculates sum of dealer two cards only
+    Game.calculatePlayerSum(); //calculates sum of player two cards only
+    if(Game.checkForBlackJackOrTie()==="tie" || Game.checkForBlackJackOrTie()==="blackjack" || Game.checkForBlackJackOrTie()==="dealerwin" ){
+      Game.displayDealerSecondCard();
+      console.log("round over due to tie or player/dealer blackjack");
+      $("#alert").text("BLACKJACK OR TIE, ROUND OVER!");
+      Game.updateBankAmountAndAlert();
+      //setTimeout($("#alert").text("CLICK NEXT ROUND TO CONTINUE!"), 2000);
+      if(Player.bankAmount <= 0){
+        $("#alert").text("LOST ALL MONEY! GAME OVER!");
+        // quit = "quit";
+      }
     } else {
-      Game.resetVariables();
-      quit = prompt("Quit or continue?").toLowerCase();
+      $("#alert").text("CLICK HIT OR STAND!");
     }
-  }
+  // }
 });
 
-$("#leftCircle").click();
+//STEP 5A - CHECK FOR STAND
+$("#standButton").click(function(){
+  //if(Player.playerHitOrStand() === "stand"){
+    Player.hitStandStatus = "stand";
+    Game.displayDealerSecondCard();
+    Game.playerHasStood();
+    // return "round over";
+  //}
+  Game.updateBankAmountAndAlert();
+  if(Player.bankAmount <= 0){
+    $("#alert").text("LOST ALL MONEY! GAME OVER!");
+    // quit = "quit";
+  }
+  //var nextRound = setTimeout($("#alert").text("CLICK NEXT ROUND TO CONTINUE!"), 2000);
+});
+
+//STEP 5B - CHECK FOR HITS
+$("#hitButton").click(function(){
+  //player hits at least once
+    ///////////
+    //keep on hitting until declare stand || bust
+    //if player has not bust and has stood, call Game.playerHasStood
+    Player.hitStandStatus = "hit";
+    //Game.calculatePlayerSum();
+    if(Player.hitStandStatus === "hit" && Player.cardSum < 21){ //MAY NEED ANOTHER CONDITION FOR WHILE LOOP
+      console.log("player hitting");
+      //player hit MECH
+      Player.playerHit();
+      //calculate sum MECH
+      Game.calculatePlayerSum();
+      console.log("current player card sum", Player.cardSum);
+      //player win (player loss) due to 21
+      if(Player.cardSum === 21){
+        Game.winStatus = "win";
+        console.log("round over due to player win");
+        terminationStatus();
+        return "round over";
+      } else if(Player.cardSum > 21 && Player.checkForAces()===true){//complicated scenario --> aces
+        console.log("checking aces");
+        Player.cardSum -= (10*Player.numAces);
+        //dealer loss (player win)
+        console.log("player sum is ", Player.cardSum);
+        if(Player.cardSum > 21){
+          Game.winStatus = "loss";
+          console.log("round over due to bust");
+          terminationStatus();
+          return "round over";
+        }
+        // if(Player.cardSum < 21 && Player.cardSum < Dealer.cardSum){
+        //   Game.winStatus = "loss";
+        //   console.log("round over due to player loss");
+        //   terminationStatus();
+        //   return "round over";
+        // } else if(Player.cardSum < 21 && Player.cardSum > Dealer.cardSum){ //player win (dealer loss)
+        //   Game.winStatus = "win";
+        //   console.log("round over due to player win");
+        //   terminationStatus();
+        //   return "round over";
+        // } else if(Player.cardSum < 21 && Player.cardSum === Dealer.cardSum){//tie
+        //   Game.winStatus = "tie";
+        //   console.log("round over due to tie");
+        //   terminationStatus();
+        //   return "round over";
+        // }
+      } else if(Player.cardSum > 21 && Player.checkForAces()===false){ //player loss (dealer win) due to bust, no aces
+        Game.winStatus = "loss";
+        console.log("round over due to bust");
+        terminationStatus();
+        return "round over";
+      }
+      // Player.hitStandStatus = prompt("Hit or stand?");
+      // $("#alert").text("CLICK HIT OR STAND?");
+    } else {
+      terminationStatus();
+      return "round over";
+    }
+    if(Player.bankAmount <= 0){
+      $("#alert").text("LOST ALL MONEY! GAME OVER!");
+      // quit = "quit";
+    }
+
+});
+
+$("#continueButton").click(function(){
+      Game.resetVariables();
+
+});
+
+    //Game.play();
+    // Game.updateBankAmountAndAlert();
+    // if(Player.bankAmount <= 0){
+    //   $("#alert").text("LOST ALL MONEY! GAME OVER!");
+    //   quit = "quit";
+    // } else {
+      //quit = prompt("quit or continue?").toLowerCase();
+    // }
+
 //Game.credits();
 }); //END OF DOCUMENT READY
 //CODE GRAVEYARD
