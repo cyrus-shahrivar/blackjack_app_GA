@@ -7,6 +7,10 @@
 //DOCUMENT READY
 $(document).ready(function(){
 
+// var betTotal = 0;
+// $("#leftCircle").click(function () {
+//        betTotal += 25;
+// });
 
 
 //DECK OBJECT
@@ -47,6 +51,31 @@ var Player = {
   hitStandStatus: "",
   cardSum: 0,
   numAces: 0,
+  betDrawer: function(){
+    var playerCoins = $("#playerCoins");
+    for (var i=0; i<(this.currentBet/25); i++){
+      var randPlaceTop = 280 + Math.floor(30*Math.random());
+      var randPlaceLeft = 300 + Math.floor(30*Math.random());
+      var coin = $("<div>");
+      coin.addClass("playerCoins");
+      coin.addClass("betCoins");
+      coin.css("top", randPlaceTop + "px");
+      coin.css("left", randPlaceLeft + "px");
+      coin.css("box-shadow", "10px 5px 5px black");
+      playerCoins.append(coin);
+    }
+  },
+  drawBet: function(){
+    if(this.currentBet === 0){
+      //remove all coins
+      var allCoins = $(".betCoins");
+      allCoins.remove();
+      //redraw coins
+      this.betDrawer();
+    } else if (this.currentBet > 0){
+      this.betDrawer();
+    }
+  },
   coinDrawer: function(){
     var playerCoins = $("#playerCoins");
     for (var i=0; i<(this.bankAmount/25); i++){
@@ -75,9 +104,37 @@ var Player = {
     //post to html
     $("#bankAmount").text("$" + " " + this.bankAmount);
   },
+  // betting: function () {
+  //   var pause = true;
+  //   $("#rightCircle").click(function(){
+  //      pause = false;
+  //   });
+  //   if(pause === true){
+  //     var betTotal = 0;
+  //     var rightClicked = true;
+  //     $("#leftCircle").click(function () {
+  //          Player.currentBet += 25;
+  //     });
+  //     var timeout = setTimeout(Player.betting, 30000);
+  //   }
+    // -----
+    // // var flag = true;
+    // function foo(){
+    //     if (flag){
+    //         $('<span> working in the background </span> <br>').appendTo($('#foo'));
+    //         setTimeout(foo, 500);}}
+    // function stop(){
+    //     flag = false;}
+    // foo();
+
+
+  // },
   makeBet: function(){
     //make bet
-    var betAmount = prompt("Make a bet");
+    var leftTitle = $("#leftTitle");
+    leftTitle.text("TAP TO BET");
+    var betAmount = prompt("make a bet");
+    //var betAmount = this.currentBet;
     if(betAmount > this.bankAmount){
       return this.makeBet(); //recursive call
     }
@@ -87,6 +144,7 @@ var Player = {
   playerHitOrStand: function(){
     //player choice
     this.hitStandStatus = prompt("Hit or Stand?").toLowerCase();
+    return this.hitStandStatus;
   },
   checkForAces: function(){
       for(var i = 0; i<Player.playerCards.length; i++){
@@ -114,7 +172,7 @@ var Player = {
     console.log("cards left in deck", Deck.shuffledDeck.length);
 
     //create new card element for dealer cards area on table and show it
-    playerCardsElement.append($("<div>").text(newCardTake.value + Player.playerCards[Player.playerCards.length-1].suit));
+    playerCardsElement.append($("<div class='cardLook'>").text(newCardTake.value + Player.playerCards[Player.playerCards.length-1].suit));
   }
 };
 
@@ -185,7 +243,7 @@ var Dealer = {
       console.log("cards left in deck", Deck.shuffledDeck.length);
 
       //create new card element for dealer cards area on table and show it
-      dealerCardsElement.append($("<div>").text(newCardTake.value + Dealer.dealerCards[Dealer.dealerCards.length-1].suit));
+      dealerCardsElement.append($("<div class='cardLook'>").text(newCardTake.value + Dealer.dealerCards[Dealer.dealerCards.length-1].suit));
     },
   dealerHitOrStand: function(){
     if(this.cardSum<17){
@@ -208,6 +266,8 @@ var Game = {
     Player.cardSum = 0;
     Dealer.cardSum = 0;
     Game.winStatus = "";
+    Player.numAces = 0;
+    Dealer.numAces = 0;
   },
   clearTableElements: function(){
     $("#alert").text("");
@@ -217,13 +277,26 @@ var Game = {
   displayFirstCards: function(){
     //display player cards
     //maybe append created divs for cards
-    $("#player").text(Player.playerCards[0].value + Player.playerCards[0].suit + " " + Player.playerCards[1].value + Player.playerCards[1].suit);
+    var card1Div = $("<div>");
+    card1Div.addClass("cardLook");
+    card1Div.text(Player.playerCards[0].value + Player.playerCards[0].suit);
+    $("#player").append(card1Div);
+    var card2Div = $("<div>");
+    card2Div.addClass("cardLook");
+    card2Div.text(Player.playerCards[1].value + Player.playerCards[1].suit);
+    $("#player").append(card2Div);
     //display dealer cards
-    $("#dealer").text(Dealer.dealerCards[0].value + Dealer.dealerCards[0].suit);
+    var card3Div = $("<div>");
+    card3Div.addClass("cardLook");
+    card3Div.text(Dealer.dealerCards[0].value + Dealer.dealerCards[0].suit);
+    $("#dealer").append(card3Div);
   },
   displayDealerSecondCard: function(){
     //could make this generic for display both player and dealer all cards - two for loops
-    $("#dealer").text(Dealer.dealerCards[0].value + Dealer.dealerCards[0].suit + " " + Dealer.dealerCards[1].value + Dealer.dealerCards[1].suit);
+    var card4Div = $("<div>");
+    card4Div.addClass("cardLook");
+    card4Div.text(Dealer.dealerCards[1].value + Dealer.dealerCards[1].suit);
+    $("#dealer").append(card4Div);
   },
   calculatePlayerSum: function(){
     var placeholder1 = 0;
@@ -281,6 +354,12 @@ var Game = {
       Dealer.dealerHitOrStand();
       Game.calculateDealerSum();
     }
+    //dealer win (player loss) due to 21
+    if(Dealer.cardSum === 21){
+      this.winStatus = "loss";
+      console.log("round over due to player loss");
+      return "round over";
+    }
     //dealer win (player loss) due to being greater than 17, below 21 assuming no more hits by dealer
     if(Dealer.cardSum < 21 && Dealer.cardSum >= 17 && Dealer.cardSum > Player.cardSum){
       this.winStatus = "loss";
@@ -299,12 +378,6 @@ var Game = {
       console.log("round over due to tie");
       return "round over";
     }
-    //dealer win (player loss) due to 21
-    if(Dealer.cardSum === 21){
-      this.winStatus = "loss";
-      console.log("round over due to player loss");
-      return "round over";
-    }
     //complicated case because of aces
     if(Dealer.cardSum > 21 && Dealer.checkForAces()===true){
       console.log("aces being checked");
@@ -318,12 +391,12 @@ var Game = {
         }
         //dealer win (player loss)
         if(Dealer.cardSum < 21 && Dealer.cardSum > Player.cardSum){
-          this.winStatus = "win";
-          console.log("round over due to player win");
+          this.winStatus = "loss";
+          console.log("round over due to player loss");
           return "round over";
         }
         //tie
-        if(Dealer.cardSum < 21 && Dealer.cardSum > Player.cardSum){
+        if(Dealer.cardSum < 21 && Dealer.cardSum === Player.cardSum){
           this.winStatus = "tie";
           console.log("round over due to tie");
           return "round over";
@@ -337,6 +410,7 @@ var Game = {
       }
   },
   play: function(){
+    Player.drawBet();
     Dealer.drawHausCoins();
     Player.drawPlayerCoins();
     Player.postBankAmount(); //shows bank amount on game table
@@ -344,11 +418,11 @@ var Game = {
     Player.bankAmount -= Player.currentBet;
     Player.postBankAmount();
     Player.drawPlayerCoins();
+    Player.drawBet();
     Dealer.dealFirstCards(); //two cards given to dealer and
     Game.displayFirstCards(); //displays player cards and first dealer card
     Game.calculateDealerSum(); //calculates sum of dealer two cards only
     Game.calculatePlayerSum(); //calculates sum of player two cards only
-    Player.playerHitOrStand(); //returns "hit" or "stand"
     //Discussed with Yuriy 10/16/15, I'm going to try implementing the idea of ACE being 11 in the realCardValue array and subtracting 10 if sum of card in hand is over 21, I agree this really simplifies the play mechanics.
     //Discussed with Ross 10/16/15: Discussed various strategies for function calls in play function.  I think I was trying to tackle all the scenarios in one shot, but Ross encouraged me to break up the problem.
     //
@@ -357,7 +431,7 @@ var Game = {
       console.log("round over due to tie or player/dealer blackjack");
       return "round over";
     } else {
-      if(Player.hitStandStatus === "stand"){
+      if(Player.playerHitOrStand() === "stand"){
         Game.displayDealerSecondCard();
         Game.playerHasStood();
         return "round over";
@@ -372,18 +446,39 @@ var Game = {
           //calculate sum MECH
           Game.calculatePlayerSum();
           console.log("current player card sum", Player.cardSum);
+          //player win (player loss) due to 21
+          if(Player.cardSum === 21){
+            this.winStatus = "win";
+            console.log("round over due to player loss");
+            return "round over";
+          }
           //complicated scenario --> aces
           if(Player.cardSum > 21 && Player.checkForAces()===true){
             console.log("checking aces");
             Player.cardSum -= (10*Player.numAces);
-            if(Player.cardSum > Dealer.cardSum){
+            //dealer loss (player win)
+            if(Player.cardSum < 21 && Player.cardSum < Dealer.cardSum){
+              this.winStatus = "loss";
+              console.log("round over due to player win");
+              return "round over";
+            }
+            //player win (dealer loss)
+            if(Player.cardSum < 21 && Player.cardSum > Dealer.cardSum){
               this.winStatus = "win";
+              console.log("round over due to player loss");
+              return "round over";
+            }
+            //tie
+            if(Player.cardSum < 21 && Player.cardSum === Dealer.cardSum){
+              this.winStatus = "tie";
+              console.log("round over due to tie");
               return "round over";
             }
           }
           //player loss (dealer win) due to bust, no aces
           if(Player.cardSum > 21 && Player.checkForAces()===false){
             this.winStatus = "loss";
+            console.log("round over due to bust");
             Game.displayDealerSecondCard();
             return "round over";
           }
@@ -427,6 +522,10 @@ $("#gameTitle").click(function(){
   // Game Play
   var quit = null;
   while(quit !== "quit"){
+    if(Deck.shuffledDeck.length <= 10){
+      $("#alert").text("NOT ENOUGH CARDS TO PLAY");
+      break;
+    }
     Game.clearTableElements();
     Game.play();
     Game.updateBankAmountAndAlert();
@@ -443,6 +542,8 @@ $("#gameTitle").click(function(){
     }
   }
 });
+
+$("#leftCircle").click();
 //Game.credits();
 }); //END OF DOCUMENT READY
 //CODE GRAVEYARD
