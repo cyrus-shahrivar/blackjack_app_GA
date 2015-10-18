@@ -36,8 +36,9 @@ body {
   font-size: 17px;
   position: fixed;
   top: 364px;
-  left: 540px;
-  width: 380px;
+  left: 387px;
+  width: 520px;
+  text-align: center;
 }
 
 #dealer {
@@ -46,7 +47,7 @@ body {
   border: 2px dashed white;
   position: relative;
   top: 10px;
-  left: 325px;
+  left: 345px;
   font-size: 20px;
 }
 
@@ -55,46 +56,101 @@ body {
   width: 100px;
   border: 2px dashed white;
   position: relative;
-  top: 200px;
-  left: 325px;
+  top: 190px;
+  left: 345px;
   font-size: 20px;
 }
 
 #gameTitle {
   position: fixed;
-  top: 220px;
-  left: 468px;
+  top: 248px;
+  left: 400px;
   font-family: 'Lobster', cursive;
-  font-size: 70px;
-  /*color: rgba(0,0,0,0.7);*/
+  font-size: 77px;
+  margin: 0 50px;
   z-index: -10;
 }
 
-#leftCircle {
-  width: 100px;
-  height: 100px;
-  border-radius: 100%;
-  border: 2px solid white;
-  position: fixed;
-  top: 400px;
-  left: 450px;
+h4 {
+  text-align: center;
+  margin: 10px auto;
 }
 
-#rightCircle {
-  width: 100px;
-  height: 100px;
-  border-radius: 100%;
+#makeBetButton:hover, #submitBetButton:hover, #quitButton:hover, #hitButton:hover, #standButton:hover, #continueButton:hover {
+  background-color: yellow;
+}
+
+#makeBetButton {
+  width: 90px;
+  height: 50px;
+  border-radius: 35%;
   border: 2px solid white;
   position: fixed;
   top: 400px;
-  left: 575px;
+  left: 420px;
+  background-color: yellowgreen;
+}
+
+#submitBetButton {
+  width: 90px;
+  height: 50px;
+  border-radius: 35%;
+  border: 2px solid white;
+  position: fixed;
+  top: 460px;
+  left: 420px;
+  background-color: yellowgreen;
+}
+
+#hitButton {
+  width: 90px;
+  height: 50px;
+  border-radius: 35%;
+  border: 2px solid white;
+  position: fixed;
+  top: 460px;
+  left: 520px;
+  background-color: yellowgreen;
+}
+
+#standButton {
+  width: 90px;
+  height: 50px;
+  border-radius: 35%;
+  border: 2px solid white;
+  position: fixed;
+  top: 400px;
+  left: 520px;
+  background-color: yellowgreen;
+}
+
+#continueButton {
+  width: 90px;
+  height: 50px;
+  border-radius: 35%;
+  border: 2px solid white;
+  position: fixed;
+  top: 400px;
+  left: 620px;
+  background-color: yellowgreen;
+}
+
+#quitButton {
+  width: 90px;
+  height: 50px;
+  border-radius: 35%;
+  border: 2px solid white;
+  position: fixed;
+  top: 460px;
+  left: 620px;
+  background-color: yellowgreen;
 }
 
 #dealerLabel {
   display: inline;
   position: fixed;
   top: 66px;
-  left: 750px;
+  left: 770px;
   width: 20px;
   overflow-wrap: break-word;
   font-size: 20px;
@@ -105,8 +161,8 @@ body {
 #playerLabel {
   display: inline;
   position: fixed;
-  top: 445px;
-  left: 750px;
+  top: 435px;
+  left: 770px;
   width: 20px;
   overflow-wrap: break-word;
   font-size: 20px;
@@ -131,7 +187,7 @@ body {
 #bankTitle {
   position: fixed;
   top: 580px;
-  left: 495px;
+  left: 505px;
   font-size: 20px;
 }
 
@@ -139,7 +195,7 @@ body {
 #bankAmount {
   position: fixed;
   top: 580px;
-  left: 565px;
+  left: 575px;
   font-size: 20px;
 }
 

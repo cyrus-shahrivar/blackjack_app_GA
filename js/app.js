@@ -7,10 +7,26 @@
 //DOCUMENT READY
 $(document).ready(function(){
 
-// var betTotal = 0;
-// $("#leftCircle").click(function () {
-//        betTotal += 25;
-// });
+
+$("#leftCircle").click(function () {
+  //if betting bet
+  //bet
+  //if hitting hit
+  //hit
+  //if continuing CONTINUE
+  //CONTINUE
+});
+$("#rightCircle").click(function () {
+  //if submitting submit
+  //submit
+  //if standing stand
+  //stand
+  //if quitting quit
+  //quit
+});
+
+
+
 
 
 //DECK OBJECT
@@ -54,7 +70,7 @@ var Player = {
   betDrawer: function(){
     var playerCoins = $("#playerCoins");
     for (var i=0; i<(this.currentBet/25); i++){
-      var randPlaceTop = 280 + Math.floor(30*Math.random());
+      var randPlaceTop = 270 + Math.floor(30*Math.random());
       var randPlaceLeft = 640 + Math.floor(30*Math.random());
       var coin = $("<div>");
       coin.addClass("playerCoins");
@@ -80,7 +96,7 @@ var Player = {
     var playerCoins = $("#playerCoins");
     for (var i=0; i<(this.bankAmount/25); i++){
       var randPlaceTop = 520 + Math.floor(25*Math.random());
-      var randPlaceLeft = 465 + Math.floor(100*Math.random());
+      var randPlaceLeft = 485 + Math.floor(100*Math.random());
       var coin = $("<div>");
       coin.addClass("playerCoins");
       coin.css("top", randPlaceTop + "px");
@@ -120,8 +136,6 @@ var Player = {
 // },
   makeBet: function(){
     //make bet
-    var leftTitle = $("#leftTitle");
-    leftTitle.text("TAP TO BET");
     var betAmount = prompt("make a bet");
     //var betAmount = this.betting();
     if(betAmount > this.bankAmount){
@@ -177,7 +191,7 @@ var Dealer = {
     console.log(houseCoins);
     for (var i=0; i<(this.houseBank/25); i++){
       var randPlaceTop = 70 + Math.floor(100*Math.random());
-      var randPlaceLeft = 465 + Math.floor(100*Math.random());
+      var randPlaceLeft = 485 + Math.floor(100*Math.random());
       var coin = $("<div>");
       coin.addClass("houseCoins");
       coin.css("top", randPlaceTop + "px");
@@ -552,7 +566,6 @@ $("#leftCircle").click();
 // } else if(Player.hitStandStatus === "hit"){
 //   Game.checkForWinStatus();
 //   //display new player card
-
 // if(Player.cardSum < 12 && (Player.playerCards[0].value === "ACE" || Player.playerCards[1].value === "ACE")){
 //   if(Player.playerCards[0].value === "ACE"){
 //     Player.playerCards[0].realValue = 11;
