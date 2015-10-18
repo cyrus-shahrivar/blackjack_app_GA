@@ -27,7 +27,7 @@ body {
   height: 615px;
   width: 528px;
   position: fixed;
-  left: 92px;
+  left: 375px;
   top: 2px
 }
 
@@ -36,7 +36,7 @@ body {
   font-size: 17px;
   position: fixed;
   top: 364px;
-  left: 250px;
+  left: 540px;
   width: 380px;
 }
 
@@ -46,7 +46,7 @@ body {
   border: 2px dashed white;
   position: relative;
   top: 10px;
-  left: 300px;
+  left: 325px;
   font-size: 20px;
 }
 
@@ -56,14 +56,14 @@ body {
   border: 2px dashed white;
   position: relative;
   top: 200px;
-  left: 300px;
+  left: 325px;
   font-size: 20px;
 }
 
 #gameTitle {
   position: fixed;
   top: 220px;
-  left: 180px;
+  left: 468px;
   font-family: 'Lobster', cursive;
   font-size: 70px;
   /*color: rgba(0,0,0,0.7);*/
@@ -77,7 +77,7 @@ body {
   border: 2px solid white;
   position: fixed;
   top: 400px;
-  left: 160px;
+  left: 450px;
 }
 
 #rightCircle {
@@ -87,14 +87,14 @@ body {
   border: 2px solid white;
   position: fixed;
   top: 400px;
-  left: 280px;
+  left: 575px;
 }
 
 #dealerLabel {
   display: inline;
   position: fixed;
   top: 66px;
-  left: 441px;
+  left: 750px;
   width: 20px;
   overflow-wrap: break-word;
   font-size: 20px;
@@ -106,7 +106,7 @@ body {
   display: inline;
   position: fixed;
   top: 445px;
-  left: 441px;
+  left: 750px;
   width: 20px;
   overflow-wrap: break-word;
   font-size: 20px;
@@ -131,7 +131,7 @@ body {
 #bankTitle {
   position: fixed;
   top: 580px;
-  left: 195px;
+  left: 495px;
   font-size: 20px;
 }
 
@@ -139,7 +139,7 @@ body {
 #bankAmount {
   position: fixed;
   top: 580px;
-  left: 260px;
+  left: 565px;
   font-size: 20px;
 }
 
@@ -150,5 +150,5 @@ body {
   display: inline-flex;
   position: fixed;
   top: 400px;
-  left: 191px;
+  left: 482px;
 }

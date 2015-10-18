@@ -55,7 +55,7 @@ var Player = {
     var playerCoins = $("#playerCoins");
     for (var i=0; i<(this.currentBet/25); i++){
       var randPlaceTop = 280 + Math.floor(30*Math.random());
-      var randPlaceLeft = 300 + Math.floor(30*Math.random());
+      var randPlaceLeft = 640 + Math.floor(30*Math.random());
       var coin = $("<div>");
       coin.addClass("playerCoins");
       coin.addClass("betCoins");
@@ -80,7 +80,7 @@ var Player = {
     var playerCoins = $("#playerCoins");
     for (var i=0; i<(this.bankAmount/25); i++){
       var randPlaceTop = 520 + Math.floor(25*Math.random());
-      var randPlaceLeft = 190 + Math.floor(100*Math.random());
+      var randPlaceLeft = 465 + Math.floor(100*Math.random());
       var coin = $("<div>");
       coin.addClass("playerCoins");
       coin.css("top", randPlaceTop + "px");
@@ -104,37 +104,26 @@ var Player = {
     //post to html
     $("#bankAmount").text("$" + " " + this.bankAmount);
   },
-  // betting: function () {
-  //   var pause = true;
-  //   $("#rightCircle").click(function(){
-  //      pause = false;
-  //   });
-  //   if(pause === true){
-  //     var betTotal = 0;
-  //     var rightClicked = true;
-  //     $("#leftCircle").click(function () {
-  //          Player.currentBet += 25;
-  //     });
-  //     var timeout = setTimeout(Player.betting, 30000);
-  //   }
-    // -----
-    // // var flag = true;
-    // function foo(){
-    //     if (flag){
-    //         $('<span> working in the background </span> <br>').appendTo($('#foo'));
-    //         setTimeout(foo, 500);}}
-    // function stop(){
-    //     flag = false;}
-    // foo();
-
-
-  // },
+//   betting: function () {
+//     var submit = false;
+//     var betTotal = 0;
+//     $("#leftCircle").click(function () {
+//          betTotal += 25;
+//     });
+//     $("#rightCircle").click(function(){
+//        submit = true;
+//     });
+//     while(submit === false){
+//       var timeout = setTimeout(function(){console.log("waiting for bet submission");}, 1000);
+//     }
+//     return betTotal;
+// },
   makeBet: function(){
     //make bet
     var leftTitle = $("#leftTitle");
     leftTitle.text("TAP TO BET");
     var betAmount = prompt("make a bet");
-    //var betAmount = this.currentBet;
+    //var betAmount = this.betting();
     if(betAmount > this.bankAmount){
       return this.makeBet(); //recursive call
     }
@@ -188,7 +177,7 @@ var Dealer = {
     console.log(houseCoins);
     for (var i=0; i<(this.houseBank/25); i++){
       var randPlaceTop = 70 + Math.floor(100*Math.random());
-      var randPlaceLeft = 190 + Math.floor(100*Math.random());
+      var randPlaceLeft = 465 + Math.floor(100*Math.random());
       var coin = $("<div>");
       coin.addClass("houseCoins");
       coin.css("top", randPlaceTop + "px");
