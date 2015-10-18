@@ -240,6 +240,7 @@ var Game = {
   },
   clearTableElements: function(){
     $("#alert").text("");
+    $(".cardLook").remove();
     // $("#player").text("");
     // $("#dealer").text("");
   },
@@ -484,18 +485,31 @@ var terminationStatus = function(){
   Game.displayDealerSecondCard();
   //Game.playerHasStood();
   Game.updateBankAmountAndAlert();
+  if(Player.bankAmount <= 0){
+    $("#alert").text("LOST ALL MONEY! GAME OVER!");
+    // quit = "quit";
+  }
 };
 
 //STEP 1 - PROMPT USER TO CLICK BET BUTTON TO START BETTING
 $("#alert").text("CLICK BET BUTTON TO MAKE YOUR BET");
 
 //STEP 2 - CREATE DECK, SHUFFLE DECK, RENDER COINS, POST INITIAL BANK AMOUNT
-Deck.createDeck(); //create deck
-Deck.shuffleDeck(); //shuffle deck
-Player.drawBet(); //render bet, house, and player coins
-Dealer.drawHausCoins();
-Player.drawPlayerCoins();
-Player.postBankAmount(); //shows bank amount on game table
+var newGame = function(){
+  Deck.createDeck(); //create deck
+  Deck.shuffleDeck(); //shuffle deck
+};
+
+newGame();
+
+var nextRound = function(){
+  Player.drawBet(); //render bet, house, and player coins
+  Dealer.drawHausCoins();
+  Player.drawPlayerCoins();
+  Player.postBankAmount(); //shows bank amount on game table
+};
+
+nextRound();
 
 //STEP 3 - MAKE BET, THEN SUBMIT ON SUBMIT BUTTON BELOW
 $("#makeBetButton").click(Player.makeBet);
@@ -608,28 +622,28 @@ $("#hitButton").click(function(){
       terminationStatus();
       return "round over";
     }
-    if(Player.bankAmount <= 0){
-      $("#alert").text("LOST ALL MONEY! GAME OVER!");
-      // quit = "quit";
-    }
-
 });
 
 $("#continueButton").click(function(){
       Game.resetVariables();
-
+      if(Deck.shuffledDeck.length <= 10){
+        $("#alert").text("NOT ENOUGH CARDS TO PLAY");
+        return "round over";
+      }
+      Game.clearTableElements();
+      $("#alert").text("CLICK BET BUTTON TO MAKE YOUR BET");
+      nextRound();
 });
 
-    //Game.play();
-    // Game.updateBankAmountAndAlert();
-    // if(Player.bankAmount <= 0){
-    //   $("#alert").text("LOST ALL MONEY! GAME OVER!");
-    //   quit = "quit";
-    // } else {
-      //quit = prompt("quit or continue?").toLowerCase();
-    // }
+$("#quitButton").click(function(){
+      Game.resetVariables();
+      Game.clearTableElements();
+      Player.bankAmount = 1000;
+      $("#alert").text("CLICK BET BUTTON TO MAKE YOUR BET");
+      newGame();
+      nextRound();
+});
 
-//Game.credits();
 }); //END OF DOCUMENT READY
 //CODE GRAVEYARD
 //===================1ft=====================
@@ -705,3 +719,14 @@ $("#continueButton").click(function(){
   // };
   //
   // containerBorderChange();
+
+    //Game.play();
+    // Game.updateBankAmountAndAlert();
+    // if(Player.bankAmount <= 0){
+    //   $("#alert").text("LOST ALL MONEY! GAME OVER!");
+    //   quit = "quit";
+    // } else {
+      //quit = prompt("quit or continue?").toLowerCase();
+    // }
+
+//Game.credits();
