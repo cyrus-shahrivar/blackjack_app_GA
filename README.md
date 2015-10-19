@@ -21,6 +21,7 @@ Unsolved Known Problems:
 - Would like to have a home screen scene, a help menu, and a credits area
 - The running is a bit slow.  I suspect it is from the large number of coins that are rendered.
 - Would like to be more mobile responsive.
+- Would like to add sounds events.
 
 Initial Wireframes:
 - See wireframes folder above
