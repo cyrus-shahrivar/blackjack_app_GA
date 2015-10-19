@@ -2,7 +2,9 @@
 // DATE: 10/15/15
 // PROJECT: BLACKJACK GAME
 //
-//
+// LESSONS LEARNED: ALTHOUGH PROMPTING MADE FOR QUICK BUILDING, POP UP WINDOWS ARE ANNOYING.
+// IT IS BETTER TO USE EVENT LISTENERS FROM THE BEGINNING IF THAT IS YOUR INTENTION.
+// STILL USING OBJECTS IF FINE, BUT BE CAREFUL OF "THIS" WITH EVENT LISTENERS.
 
 //DOCUMENT READY
 $(document).ready(function(){
@@ -380,89 +382,6 @@ var Game = {
         return "round over";
       }
   },
-  // play: function(){
-    // Player.drawBet();
-    // Dealer.drawHausCoins();
-    // Player.drawPlayerCoins();
-    // Player.postBankAmount(); //shows bank amount on game table
-    // Player.makeBet(); //show bet amount on table and updates currentBet
-    // Player.bankAmount -= Player.currentBet;
-    // Player.postBankAmount();
-    // Player.drawPlayerCoins();
-    // Player.drawBet();
-    // Dealer.dealFirstCards(); //two cards given to dealer and
-    // Game.displayFirstCards(); //displays player cards and first dealer card
-    // Game.calculateDealerSum(); //calculates sum of dealer two cards only
-    // Game.calculatePlayerSum(); //calculates sum of player two cards only
-    //Discussed with Yuriy 10/16/15, I'm going to try implementing the idea of ACE being 11 in the realCardValue array and subtracting 10 if sum of card in hand is over 21, I agree this really simplifies the play mechanics.
-    //Discussed with Ross 10/16/15: Discussed various strategies for function calls in play function.  I think I was trying to tackle all the scenarios in one shot, but Ross encouraged me to break up the problem.
-    //
-    // if(Game.checkForBlackJackOrTie()==="tie" || Game.checkForBlackJackOrTie()==="blackjack" || Game.checkForBlackJackOrTie()==="dealerwin" ){
-    //   Game.displayDealerSecondCard();
-    //   console.log("round over due to tie or player/dealer blackjack");
-    //   return "round over";
-    // } else {
-      // if(Player.playerHitOrStand() === "stand"){
-      //   Game.displayDealerSecondCard();
-      //   Game.playerHasStood();
-      //   return "round over";
-      // } else { //player hits at least once
-        ///////////
-        //keep on hitting until declare stand || bust
-        //if player has not bust and has stood, call Game.playerHasStood
-        // while(Player.hitStandStatus === "hit" && Player.cardSum < 21){ //MAY NEED ANOTHER CONDITION FOR WHILE LOOP
-        //   console.log("player hitting");
-        //   //player hit MECH
-        //   Player.playerHit();
-        //   //calculate sum MECH
-        //   Game.calculatePlayerSum();
-        //   console.log("current player card sum", Player.cardSum);
-        //   //player win (player loss) due to 21
-        //   if(Player.cardSum === 21){
-        //     Game.winStatus = "win";
-        //     console.log("round over due to player loss");
-        //     return "round over";
-        //   }
-        //   //complicated scenario --> aces
-        //   if(Player.cardSum > 21 && Player.checkForAces()===true){
-        //     console.log("checking aces");
-        //     Player.cardSum -= (10*Player.numAces);
-        //     //dealer loss (player win)
-        //     if(Player.cardSum < 21 && Player.cardSum < Dealer.cardSum){
-        //       Game.winStatus = "loss";
-        //       console.log("round over due to player win");
-        //       return "round over";
-        //     }
-        //     //player win (dealer loss)
-        //     if(Player.cardSum < 21 && Player.cardSum > Dealer.cardSum){
-        //       Game.winStatus = "win";
-        //       console.log("round over due to player loss");
-        //       return "round over";
-        //     }
-        //     //tie
-        //     if(Player.cardSum < 21 && Player.cardSum === Dealer.cardSum){
-        //       Game.winStatus = "tie";
-        //       console.log("round over due to tie");
-        //       return "round over";
-        //     }
-        //   }
-        //   //player loss (dealer win) due to bust, no aces
-        //   if(Player.cardSum > 21 && Player.checkForAces()===false){
-        //     Game.winStatus = "loss";
-        //     console.log("round over due to bust");
-        //     Game.displayDealerSecondCard();
-        //     return "round over";
-        //   }
-        //   Player.hitStandStatus = prompt("Hit or stand?");
-        // }
-        //player finally stands if no bust
-      //   Game.displayDealerSecondCard();
-      //   Game.playerHasStood();
-      //   return "round over";
-      //   ///////////
-      // }
-  //   }
-  // },
   helpScreen: function(){
     //Help Text HERE
     console.log("");
@@ -586,7 +505,7 @@ $("#hitButton").click(function(){
       } else if(Player.cardSum > 21 && Player.checkForAces()===true){//complicated scenario --> aces
         console.log("checking aces");
         Player.cardSum -= (10*Player.numAces);
-        //dealer loss (player win)
+        //player loss (dealer win)
         console.log("player sum is ", Player.cardSum);
         if(Player.cardSum > 21){
           Game.winStatus = "loss";
@@ -624,6 +543,7 @@ $("#hitButton").click(function(){
     }
 });
 
+//STEP 6 - CONTINUE TO NEXT ROUND WITH NEXT ROUND BUTTON
 $("#continueButton").click(function(){
       Game.resetVariables();
       if(Deck.shuffledDeck.length <= 10){
@@ -635,6 +555,7 @@ $("#continueButton").click(function(){
       nextRound();
 });
 
+//STEP 7 - TRY NEW GAME IF NEEDED WITHOUT REFRESHING BROWSWER
 $("#quitButton").click(function(){
       Game.resetVariables();
       Game.clearTableElements();
@@ -730,3 +651,86 @@ $("#quitButton").click(function(){
     // }
 
 //Game.credits();
+// play: function(){
+  // Player.drawBet();
+  // Dealer.drawHausCoins();
+  // Player.drawPlayerCoins();
+  // Player.postBankAmount(); //shows bank amount on game table
+  // Player.makeBet(); //show bet amount on table and updates currentBet
+  // Player.bankAmount -= Player.currentBet;
+  // Player.postBankAmount();
+  // Player.drawPlayerCoins();
+  // Player.drawBet();
+  // Dealer.dealFirstCards(); //two cards given to dealer and
+  // Game.displayFirstCards(); //displays player cards and first dealer card
+  // Game.calculateDealerSum(); //calculates sum of dealer two cards only
+  // Game.calculatePlayerSum(); //calculates sum of player two cards only
+  //Discussed with Yuriy 10/16/15, I'm going to try implementing the idea of ACE being 11 in the realCardValue array and subtracting 10 if sum of card in hand is over 21, I agree this really simplifies the play mechanics.
+  //Discussed with Ross 10/16/15: Discussed various strategies for function calls in play function.  I think I was trying to tackle all the scenarios in one shot, but Ross encouraged me to break up the problem.
+  //
+  // if(Game.checkForBlackJackOrTie()==="tie" || Game.checkForBlackJackOrTie()==="blackjack" || Game.checkForBlackJackOrTie()==="dealerwin" ){
+  //   Game.displayDealerSecondCard();
+  //   console.log("round over due to tie or player/dealer blackjack");
+  //   return "round over";
+  // } else {
+    // if(Player.playerHitOrStand() === "stand"){
+    //   Game.displayDealerSecondCard();
+    //   Game.playerHasStood();
+    //   return "round over";
+    // } else { //player hits at least once
+      ///////////
+      //keep on hitting until declare stand || bust
+      //if player has not bust and has stood, call Game.playerHasStood
+      // while(Player.hitStandStatus === "hit" && Player.cardSum < 21){ //MAY NEED ANOTHER CONDITION FOR WHILE LOOP
+      //   console.log("player hitting");
+      //   //player hit MECH
+      //   Player.playerHit();
+      //   //calculate sum MECH
+      //   Game.calculatePlayerSum();
+      //   console.log("current player card sum", Player.cardSum);
+      //   //player win (player loss) due to 21
+      //   if(Player.cardSum === 21){
+      //     Game.winStatus = "win";
+      //     console.log("round over due to player loss");
+      //     return "round over";
+      //   }
+      //   //complicated scenario --> aces
+      //   if(Player.cardSum > 21 && Player.checkForAces()===true){
+      //     console.log("checking aces");
+      //     Player.cardSum -= (10*Player.numAces);
+      //     //dealer loss (player win)
+      //     if(Player.cardSum < 21 && Player.cardSum < Dealer.cardSum){
+      //       Game.winStatus = "loss";
+      //       console.log("round over due to player win");
+      //       return "round over";
+      //     }
+      //     //player win (dealer loss)
+      //     if(Player.cardSum < 21 && Player.cardSum > Dealer.cardSum){
+      //       Game.winStatus = "win";
+      //       console.log("round over due to player loss");
+      //       return "round over";
+      //     }
+      //     //tie
+      //     if(Player.cardSum < 21 && Player.cardSum === Dealer.cardSum){
+      //       Game.winStatus = "tie";
+      //       console.log("round over due to tie");
+      //       return "round over";
+      //     }
+      //   }
+      //   //player loss (dealer win) due to bust, no aces
+      //   if(Player.cardSum > 21 && Player.checkForAces()===false){
+      //     Game.winStatus = "loss";
+      //     console.log("round over due to bust");
+      //     Game.displayDealerSecondCard();
+      //     return "round over";
+      //   }
+      //   Player.hitStandStatus = prompt("Hit or stand?");
+      // }
+      //player finally stands if no bust
+    //   Game.displayDealerSecondCard();
+    //   Game.playerHasStood();
+    //   return "round over";
+    //   ///////////
+    // }
+//   }
+// },
