@@ -1,5 +1,5 @@
 # BLACKJACK WEB APP
-http://www.cyrusshahrivar.com/BLACKJACK
+http://www.cyrusshahrivar.com/blackjack
 
 Author: Cyrus Shahrivar
 
