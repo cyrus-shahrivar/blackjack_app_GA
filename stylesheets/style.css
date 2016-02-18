@@ -207,3 +207,10 @@ h4 {
   top: 400px;
   left: 482px;
 }
+
+#tooltip {
+  position: fixed;
+  right: 30px;
+  top: 10px;
+  color: white;
+}
