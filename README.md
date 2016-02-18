@@ -3,9 +3,8 @@ http://www.cyrusshahrivar.com/blackjack
 
 Author: Cyrus Shahrivar
 
-Date:
-Version 1: October 18, 2015
-Version 2: February 18, 2016
+- Version 1: October 18, 2015
+- Version 2: February 18, 2016
   - added help tooltip
 
 ***
