@@ -3,7 +3,10 @@ http://www.cyrusshahrivar.com/blackjack
 
 Author: Cyrus Shahrivar
 
-Date: October 18, 2015
+Date:
+Version 1: October 18, 2015
+Version 2: February 18, 2016
+  - added help tooltip
 
 ***
 Technologies Used:
@@ -18,8 +21,6 @@ Installation Instructions:
 - As long as you are using a modern browser (generally Google Chrome, Firefox, or Safari) that can parse html5, javascript, jquery, and css, then you are probably ok with just following the link above with no additional downloads.
 
 Unsolved Known Problems:
-- Would like to have a home screen scene, a help menu, and a credits area
-- The running is a bit slow.  I suspect it is from the large number of coins that are rendered.
 - Would like to be more mobile responsive.
 - Would like to add sounds events.
 
