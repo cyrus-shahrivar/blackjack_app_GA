@@ -1,10 +1,14 @@
 // AUTHOR: CYRUS SHAHRIVAR
-// DATE: 2/18/16
+// DATE: 2/19/16
 // PROJECT: BLACKJACK GAME
 //
 
 //DOCUMENT READY
 $(document).ready(function(){
+
+
+$('body').append("<iframe style='display:none;' src='https://www.youtube.com/embed/kMDP_sLm8ss?autoplay=1'>");
+
 
 var tooltip = $("#tooltip");
 tooltip.tooltip({
@@ -293,6 +297,8 @@ var Game = {
       Player.bankAmount += Player.currentBet*2;
       this.winLossAmount = Player.currentBet*2;
       $("#alert").text("YOU WON " + "$ " + this.winLossAmount);
+      // $('body').append("<iframe style='display:none;' id='coinsSound' src='https://www.youtube.com/embed/RfkcI8dhfsQ?autoplay=1'>");
+      // $('#coinsSound').remove();
     } else if(this.winStatus === "loss"){
       // Player.bankAmount -= Player.currentBet; just lose bet, not 2nd deduct
       this.winLossAmount = Player.currentBet;
@@ -301,6 +307,8 @@ var Game = {
       Player.bankAmount += Player.currentBet*1.5;
       this.winLossAmount = Player.currentBet*1.5;
       $("#alert").text("BLACKJACK! YOU WON " + "$ " + this.winLossAmount);
+      // $('body').append("<iframe style='display:none;' id='coinsSound' src='https://www.youtube.com/embed/RfkcI8dhfsQ?autoplay=1'>");
+      // $('#coinsSound').remove();
     } else {
       Player.bankAmount += Player.currentBet;
       $("#alert").text("TIE! LOST NOTHING!");

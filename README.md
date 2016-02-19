@@ -6,6 +6,8 @@ Author: Cyrus Shahrivar
 - Version 1: October 18, 2015
 - Version 1.1: February 18, 2016
   - added help tooltip
+- Version 1.2: February 19, 2016
+  - added ambient audio
 
 ***
 Technologies Used:
