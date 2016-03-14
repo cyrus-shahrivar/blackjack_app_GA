@@ -6,10 +6,7 @@
 //DOCUMENT READY
 $(document).ready(function(){
 
-
-$('body').append("<iframe style='display:none;' src='https://www.youtube.com/embed/kMDP_sLm8ss?autoplay=1'>");
-
-
+// HELP MENU
 var tooltip = $("#tooltip");
 tooltip.tooltip({
   content: "<p>How to Play: <br>Step(1): Click 'Bet $25' to increase your bet. <br>Step(2): When you are ready, click 'Submit Bet'. <br>Step(3): Decide if you want to 'Stand!' or 'Hit Me!' based on what you have been dealt. <br>Step(4): When round is over, click 'Next Round'. <br>Step(5): If you want to start over or the game is over, click 'Play New Game'.</p>"
@@ -21,6 +18,8 @@ var Deck = {
     deck: [],
     shuffledDeck: [],
     spentCardStack: [],
+    // trying out a different way of generating a deck of cards
+    cards: [{card: "🂣", name: this.value + "" + this.suit, value: 3, suit: "spades"},{name:"🂡", value: [1,11], suit: "spades"}],
     cardValues: [2,3,4,5,6,7,8,9,10,"J","Q","K","A"],
     cardRealValues: [2,3,4,5,6,7,8,9,10,10,10,10,11],
     cardSuitsTypes: ["♥","♠","♣","♦"],
@@ -42,6 +41,8 @@ var Deck = {
       }
     }
 };
+
+
 
 //PLAYER OBJECT
 var Player = {
