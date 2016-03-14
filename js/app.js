@@ -12,6 +12,63 @@ tooltip.tooltip({
   content: "<p>How to Play: <br>Step(1): Click 'Bet $25' to increase your bet. <br>Step(2): When you are ready, click 'Submit Bet'. <br>Step(3): Decide if you want to 'Stand!' or 'Hit Me!' based on what you have been dealt. <br>Step(4): When round is over, click 'Next Round'. <br>Step(5): If you want to start over or the game is over, click 'Play New Game'.</p>"
 });
 
+var Card = function(cardIcon, cardValue ,cardSuit){
+  this.card = cardIcon;
+  this.value = cardValue;
+  this.name = this.value + " of " + cardSuit;
+  this.visible = false;
+  this.ace = false;
+  this.isAce = function(){
+    if(this.value == 1){
+      this.value = [1,11];
+    }
+  };
+  this.render = function(){
+
+  };
+};
+
+var Deck2 = function(){
+  this.deck = [];
+  this.isShuffled = false;
+  this.cardValues = [1,2,3,4,5,6,7,8,9,10,10,10,10];
+  this.cardSuits = ["spades", "hearts", "diamonds", "clubs"];
+  this.cardIcons = ["🂡","🂢","🂣","🂤","🂥","🂦","🂧","🂨","🂩","🂪","🂫","🂭","🂮",
+                    "🂱","🂲","🂳","🂴","🂵","🂶","🂷","🂸","🂹","🂺","🂻","🂽","🂾",
+                    "🃁","🃂","🃃","🃄","🃅","🃆","🃇","🃈","🃉","🃊","🃋","🃍","🃎",
+                    "🃑","🃒","🃓","🃔","🃕","🃖","🃗","🃘","🃙","🃚","🃛","🃝","🃞"];
+  this.addCards = function(){
+    //create new Card for each icon
+    var suit = "";
+    var value = 0;
+    for(var i = 0; i<this.cardIcons.length; i++){
+      if(i >= 0 && i <= 12){
+        suit = this.cardSuits[0];
+        value = this.cardValues[i];
+      } else if(i >= 13 && i <= 25) {
+        suit = this.cardSuits[1];
+        value = this.cardValues[i - 13];
+      } else if(i >= 26 && i <= 38) {
+        suit = this.cardSuits[2];
+        value = this.cardValues[i - 26];
+      } else if(i >= 39 && i <= 51) {
+        suit = this.cardSuits[3];
+        value = this.cardValues[i - 39];
+      }
+
+      var newCard = new Card(this.cardIcons[i], value ,suit);
+      this.deck.push(newCard);
+    }
+    //
+  };
+};
+
+var newDeck = new Deck2();
+newDeck.addCards();
+console.log(newDeck);
+
+
+
 //DECK OBJECT
 var Deck = {
     numberOfDecks: 1,
