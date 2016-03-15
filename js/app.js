@@ -19,16 +19,21 @@ var Card = function(cardIcon, cardValue ,cardSuit){
   this.visible = false;
   this.ace = false;
   this.isAce = function(){
-    if(this.value == 1){
+    if(this.value === 1){
       this.value = [1,11];
+      return true;
     }
+    return false;
   };
-  this.render = function(){
-
+  this.render = function(render){
+    if(render === true){
+      this.visible = true;
+    }
   };
 };
 
-var Deck2 = function(){
+var Deck2 = function(numberOfDecks){
+  this.numberOfDecks = numberOfDecks;
   this.deck = [];
   this.isShuffled = false;
   this.cardValues = [1,2,3,4,5,6,7,8,9,10,10,10,10];
@@ -37,33 +42,78 @@ var Deck2 = function(){
                     "🂱","🂲","🂳","🂴","🂵","🂶","🂷","🂸","🂹","🂺","🂻","🂽","🂾",
                     "🃁","🃂","🃃","🃄","🃅","🃆","🃇","🃈","🃉","🃊","🃋","🃍","🃎",
                     "🃑","🃒","🃓","🃔","🃕","🃖","🃗","🃘","🃙","🃚","🃛","🃝","🃞"];
+  this.shuffleDeck = function(){
+    
+  };
   this.addCards = function(){
-    //create new Card for each icon
-    var suit = "";
-    var value = 0;
-    for(var i = 0; i<this.cardIcons.length; i++){
-      if(i >= 0 && i <= 12){
-        suit = this.cardSuits[0];
-        value = this.cardValues[i];
-      } else if(i >= 13 && i <= 25) {
-        suit = this.cardSuits[1];
-        value = this.cardValues[i - 13];
-      } else if(i >= 26 && i <= 38) {
-        suit = this.cardSuits[2];
-        value = this.cardValues[i - 26];
-      } else if(i >= 39 && i <= 51) {
-        suit = this.cardSuits[3];
-        value = this.cardValues[i - 39];
-      }
+    //create new Card for each icon based on numberOfDecks
+    for(var j=0; j<this.numberOfDecks; j++){
+      var suit = "";
+      var value = 0;
+      for(var i = 0; i<this.cardIcons.length; i++){
+        if(i >= 0 && i <= 12){
+          suit = this.cardSuits[0];
+          value = this.cardValues[i];
+        } else if(i >= 13 && i <= 25) {
+          suit = this.cardSuits[1];
+          value = this.cardValues[i - 13];
+        } else if(i >= 26 && i <= 38) {
+          suit = this.cardSuits[2];
+          value = this.cardValues[i - 26];
+        } else if(i >= 39 && i <= 51) {
+          suit = this.cardSuits[3];
+          value = this.cardValues[i - 39];
+        }
 
-      var newCard = new Card(this.cardIcons[i], value ,suit);
-      this.deck.push(newCard);
+        var newCard = new Card(this.cardIcons[i], value ,suit);
+        this.deck.push(newCard);
+      }
     }
     //
   };
 };
 
-var newDeck = new Deck2();
+var PlayerV2 = function(){
+  this.hitStatus = false;
+  this.standStatus = false;
+  this.hand = [];
+  this.bet = 0;
+  this.bank = 1000;
+  this.makeBet = function(){
+
+  };
+  this.setHitStatus = function(){
+
+  };
+  this.setStandStatus = function(){
+
+  };
+};
+
+var DealerV2  = function(){
+  this.hitStatus = false;
+  this.standStatus = false;
+  this.hand = [];
+  this.bet = 0;
+  this.bank = 100000;
+  this.setHitStatus = function(){
+
+  };
+  this.setStandStatus = function(){
+
+  };
+};
+
+var GameV2 = function(){
+  this.deal = function(){
+    //deal cards to player and dealer
+  };
+  this.checkWin = function(){
+    //check for winning combos
+  };
+};
+
+var newDeck = new Deck2(2);
 newDeck.addCards();
 console.log(newDeck);
 
