@@ -43,7 +43,7 @@ var Deck2 = function(numberOfDecks){
                     "🃁","🃂","🃃","🃄","🃅","🃆","🃇","🃈","🃉","🃊","🃋","🃍","🃎",
                     "🃑","🃒","🃓","🃔","🃕","🃖","🃗","🃘","🃙","🃚","🃛","🃝","🃞"];
   this.shuffleDeck = function(){
-    
+    this.deck = _.shuffle(this.deck);
   };
   this.addCards = function(){
     //create new Card for each icon based on numberOfDecks
@@ -73,51 +73,65 @@ var Deck2 = function(numberOfDecks){
   };
 };
 
-var PlayerV2 = function(){
+var PlayerV2 = function(bank){
   this.hitStatus = false;
   this.standStatus = false;
   this.hand = [];
   this.bet = 0;
-  this.bank = 1000;
-  this.makeBet = function(){
-
+  this.bank = bank;
+  this.makeBet = function(betAmount){
+      this.bet = betAmount;
+      this.bank = this.bank - betAmount;
   };
   this.setHitStatus = function(){
-
+    this.hitStatus = true;
   };
   this.setStandStatus = function(){
-
-  };
-};
-
-var DealerV2  = function(){
-  this.hitStatus = false;
-  this.standStatus = false;
-  this.hand = [];
-  this.bet = 0;
-  this.bank = 100000;
-  this.setHitStatus = function(){
-
-  };
-  this.setStandStatus = function(){
-
+    this.standStatus = true;
   };
 };
 
 var GameV2 = function(){
+  this.startGame = function(){
+    //initialize game
+  };
+  this.newGame = function(){
+    //start new game
+  };
+  //prevent buttons from working when game state is at certain points
+  this.preventBet = function(){};
+  this.preventHit = function(){};
+  this.preventStand = function(){};
+  this.preventNextRound = function(){};
+  this.preventSubmitBet = function(){};
+  this.preventNewGame = function(){};
   this.deal = function(){
     //deal cards to player and dealer
   };
-  this.checkWin = function(){
+  this.checkDealerWin = function(){
     //check for winning combos
+  };
+  this.checkPlayerWin = function(){
+    //check for winning combos
+  };
+  this.award = function(){
+    //award amount to player bank
+  };
+  this.loseMoney = function(){
+    //lose bet money
   };
 };
 
+// TEST CODE
 var newDeck = new Deck2(2);
 newDeck.addCards();
+newDeck.shuffleDeck();
 console.log(newDeck);
 
-
+var humanPlayer = new PlayerV2();
+var computerDealer = new PlayerV2();
+var newGame = new GameV2();
+console.log(newDealer, newPlayer, newGame);
 
 //DECK OBJECT
 var Deck = {
