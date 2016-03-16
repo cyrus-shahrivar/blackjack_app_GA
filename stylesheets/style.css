@@ -200,6 +200,7 @@ h4 {
 
 .cardLook {
   border: 0px;
+  border-radius: 10px;
   text-align: center;
   font-size: 125px;
   text-align: left;
