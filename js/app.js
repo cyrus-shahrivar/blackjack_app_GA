@@ -73,97 +73,84 @@ var Deck2 = function(numberOfDecks){
   };
 };
 
-var PlayerV2 = function(bank){
-  this.hitStatus = false;
-  this.standStatus = false;
-  this.hand = [];
-  this.bet = 0;
-  this.bank = bank;
-  this.makeBet = function(betAmount){
-      this.bet = betAmount;
-      this.bank = this.bank - betAmount;
-  };
-  this.setHitStatus = function(){
-    this.hitStatus = true;
-  };
-  this.setStandStatus = function(){
-    this.standStatus = true;
-  };
-};
-
-var GameV2 = function(){
-  this.startGame = function(){
-    //initialize game
-  };
-  this.newGame = function(){
-    //start new game
-  };
-  //prevent buttons from working when game state is at certain points
-  this.preventBet = function(){};
-  this.preventHit = function(){};
-  this.preventStand = function(){};
-  this.preventNextRound = function(){};
-  this.preventSubmitBet = function(){};
-  this.preventNewGame = function(){};
-  this.deal = function(){
-    //deal cards to player and dealer
-  };
-  this.checkDealerWin = function(){
-    //check for winning combos
-  };
-  this.checkPlayerWin = function(){
-    //check for winning combos
-  };
-  this.award = function(){
-    //award amount to player bank
-  };
-  this.loseMoney = function(){
-    //lose bet money
-  };
-};
-
-// TEST CODE
+// New Game creates new Deck, shuffles deck, creates Player and Dealer and Game
 var newDeck = new Deck2(2);
 newDeck.addCards();
 newDeck.shuffleDeck();
-console.log(newDeck);
-
-var humanPlayer = new PlayerV2();
-var computerDealer = new PlayerV2();
-var newGame = new GameV2();
-console.log(newDealer, newPlayer, newGame);
-
-//DECK OBJECT
-var Deck = {
-    numberOfDecks: 1,
-    deck: [],
-    shuffledDeck: [],
-    spentCardStack: [],
-    // trying out a different way of generating a deck of cards
-    cards: [{card: "🂣", name: this.value + "" + this.suit, value: 3, suit: "spades"},{name:"🂡", value: [1,11], suit: "spades"}],
-    cardValues: [2,3,4,5,6,7,8,9,10,"J","Q","K","A"],
-    cardRealValues: [2,3,4,5,6,7,8,9,10,10,10,10,11],
-    cardSuitsTypes: ["♥","♠","♣","♦"],
-    createDeck: function(){
-      // updates this.deck to a full deck of 52 cards as objects with value and suit
-      for(var i=0; i<this.cardSuitsTypes.length; i++){
-        for(var j=0; j<this.cardValues.length; j++){
-          this.deck.push({value: this.cardValues[j], suit: this.cardSuitsTypes[i], realValue: this.cardRealValues[j]});
-        }
-      }
-    },
-    shuffleDeck: function(){
-      // updates shuffledDeck to a full deck of 52 shuffled cards using random selection
-      var length = this.deck.length;
-      for(var i = 0; i<length; i++){
-        var randomNum = Math.floor(this.deck.length*Math.random());
-        this.shuffledDeck.push(this.deck[randomNum]);
-        this.deck.splice(randomNum,1);
-      }
-    }
-};
 
 
+////////////////////////////////// FOR LATER DEVELOPMENT
+//////////////////////////////////
+//////////////////////////////////
+
+// var PlayerV2 = function(bank){
+//   this.hitStatus = false;
+//   this.standStatus = false;
+//   this.hand = [];
+//   this.bet = 0;
+//   this.bank = bank;
+//   this.makeBet = function(betAmount){
+//       this.bet = betAmount;
+//       this.bank = this.bank - betAmount;
+//   };
+//   this.setHitStatus = function(){
+//     this.hitStatus = true;
+//   };
+//   this.setStandStatus = function(){
+//     this.standStatus = true;
+//   };
+// };
+
+// var GameV2 = function(){
+//   this.startGame = function(){
+//     //initialize game
+//
+//   };
+//   this.newGame = function(){
+//     //start new game
+//   };
+//   //prevent buttons from working when game state is at certain points
+//   this.preventBet = function(){};
+//   this.preventHit = function(){};
+//   this.preventStand = function(){};
+//   this.preventNextRound = function(){};
+//   this.preventSubmitBet = function(){};
+//   this.preventNewGame = function(){};
+//   this.deal = function(){
+//     //deal cards to player and dealer
+//   };
+//   this.checkDealerWin = function(){
+//     //check for winning combos
+//   };
+//   this.checkPlayerWin = function(){
+//     //check for winning combos
+//   };
+//   this.award = function(){
+//     //award amount to player bank
+//   };
+//   this.loseMoney = function(){
+//     //lose bet money
+//   };
+// };
+
+
+// Create New GameV2
+// var humanPlayer = new PlayerV2(1000);
+// var computerDealer = new PlayerV2(10000);
+// var newGame = new GameV2();
+
+// Player Makes Bet
+// Player Submits Bet
+// Player is Dealt Cards - Both Face Up Since Only 1 Player Game
+// Dealer is Dealt Cards - One Face Up, One Face Down
+// Player Hits or Stands
+// Dealer Hits or Stands Until Sum >= 17
+// Player is awarded or loses money
+// Next Round
+
+//////////////////////////////////
+//////////////////////////////////
+//////////////////////////////////
 
 //PLAYER OBJECT
 var Player = {
@@ -176,12 +163,11 @@ var Player = {
   cardSum: 0,
   numAces: 0,
   betDrawer: function(){
-    var playerCoins = $("#playerCoins");
+    var playerCoins = $("#betCoins");
     for (var i=0; i<(this.currentBet/25); i++){
-      var randPlaceTop = 270 + Math.floor(30*Math.random());
-      var randPlaceLeft = 640 + Math.floor(30*Math.random());
+      var randPlaceTop = Math.floor(30*Math.random());
+      var randPlaceLeft = Math.floor(30*Math.random());
       var coin = $("<div>");
-      coin.addClass("playerCoins");
       coin.addClass("betCoins");
       coin.css("top", randPlaceTop + "px");
       coin.css("left", randPlaceLeft + "px");
@@ -203,8 +189,8 @@ var Player = {
   coinDrawer: function(){
     var playerCoins = $("#playerCoins");
     for (var i=0; i<(this.bankAmount/25); i++){
-      var randPlaceTop = 520 + Math.floor(25*Math.random());
-      var randPlaceLeft = 485 + Math.floor(100*Math.random());
+      var randPlaceTop = Math.floor(25*Math.random());
+      var randPlaceLeft = Math.floor(100*Math.random());
       var coin = $("<div>");
       coin.addClass("playerCoins");
       coin.css("top", randPlaceTop + "px");
@@ -259,18 +245,18 @@ var Player = {
     var playerCardsElement = $("#player");
 
     //take the last card from the end of the deck
-    var newCardTake = Deck.shuffledDeck[Deck.shuffledDeck.length-1];
+    var newCardTake = newDeck.deck[newDeck.deck.length-1];
     console.log("hit player card value", newCardTake.realValue);
 
     //add that card to the dealer cards array
     this.playerCards.push(newCardTake);
 
     //remove the last card in the deck "the top of the card stack"
-    Deck.shuffledDeck.pop();
-    console.log("cards left in deck", Deck.shuffledDeck.length);
+    newDeck.deck.pop();
+    console.log("cards left in deck", newDeck.deck.length);
 
     //create new card element for dealer cards area on table and show it
-    playerCardsElement.append($("<div class='cardLook'>").text(newCardTake.value + Player.playerCards[Player.playerCards.length-1].suit));
+    playerCardsElement.append($("<div class='cardLook'>").text(newCardTake.card));
   }
 };
 
@@ -285,8 +271,8 @@ var Dealer = {
     var houseCoins = $("#houseCoins");
     console.log(houseCoins);
     for (var i=0; i<(this.houseBank/25); i++){
-      var randPlaceTop = 70 + Math.floor(100*Math.random());
-      var randPlaceLeft = 485 + Math.floor(100*Math.random());
+      var randPlaceTop = Math.floor(100*Math.random());
+      var randPlaceLeft = Math.floor(100*Math.random());
       var coin = $("<div>");
       coin.addClass("houseCoins");
       coin.css("top", randPlaceTop + "px");
@@ -308,40 +294,40 @@ var Dealer = {
   dealFirstCards: function(){
     //deal cards
     //give player two cards
-    var cardTake1 = Deck.shuffledDeck[Deck.shuffledDeck.length - 1];
-    var cardTake2 = Deck.shuffledDeck[Deck.shuffledDeck.length - 2];
+    var cardTake1 = newDeck.deck[newDeck.deck.length - 1];
+    var cardTake2 = newDeck.deck[newDeck.deck.length - 2];
     Player.playerCards.push(cardTake1);
     Player.playerCards.push(cardTake2);
 
     //give computer two cards
-    var cardTake3 = Deck.shuffledDeck[Deck.shuffledDeck.length - 3];
-    var cardTake4 = Deck.shuffledDeck[Deck.shuffledDeck.length - 4];
+    var cardTake3 = newDeck.deck[newDeck.deck.length - 3];
+    var cardTake4 = newDeck.deck[newDeck.deck.length - 4];
     this.dealerCards.push(cardTake3);
     this.dealerCards.push(cardTake4);
 
     //need to pop cards too
-    Deck.shuffledDeck.pop();
-    Deck.shuffledDeck.pop();
-    Deck.shuffledDeck.pop();
-    Deck.shuffledDeck.pop();
+    newDeck.deck.pop();
+    newDeck.deck.pop();
+    newDeck.deck.pop();
+    newDeck.deck.pop();
   },
   hitDealer: function(){
       //select dealer cards location
       var dealerCardsElement = $("#dealer");
 
       //take the last card from the end of the deck
-      var newCardTake = Deck.shuffledDeck[Deck.shuffledDeck.length-1];
+      var newCardTake = newDeck.deck[newDeck.deck.length-1];
       console.log("hit dealer card value", newCardTake.realValue);
 
       //add that card to the dealer cards array
       this.dealerCards.push(newCardTake);
 
       //remove the last card in the deck "the top of the card stack"
-      Deck.shuffledDeck.pop();
-      console.log("cards left in deck", Deck.shuffledDeck.length);
+      newDeck.deck.pop();
+      console.log("cards left in deck", newDeck.deck.length);
 
       //create new card element for dealer cards area on table and show it
-      dealerCardsElement.append($("<div class='cardLook'>").text(newCardTake.value + Dealer.dealerCards[Dealer.dealerCards.length-1].suit));
+      dealerCardsElement.append($("<div class='cardLook'>").text(newCardTake.card));
     },
   dealerHitOrStand: function(){
     if(this.cardSum<17){
@@ -378,29 +364,29 @@ var Game = {
     //maybe append created divs for cards
     var card1Div = $("<div>");
     card1Div.addClass("cardLook");
-    card1Div.text(Player.playerCards[0].value + Player.playerCards[0].suit);
+    card1Div.text(Player.playerCards[0].card);
     $("#player").append(card1Div);
     var card2Div = $("<div>");
     card2Div.addClass("cardLook");
-    card2Div.text(Player.playerCards[1].value + Player.playerCards[1].suit);
+    card2Div.text(Player.playerCards[1].card);
     $("#player").append(card2Div);
     //display dealer cards
     var card3Div = $("<div>");
     card3Div.addClass("cardLook");
-    card3Div.text(Dealer.dealerCards[0].value + Dealer.dealerCards[0].suit);
+    card3Div.text(Dealer.dealerCards[0].card);
     $("#dealer").append(card3Div);
   },
   displayDealerSecondCard: function(){
     //could make this generic for display both player and dealer all cards - two for loops
     var card4Div = $("<div>");
     card4Div.addClass("cardLook");
-    card4Div.text(Dealer.dealerCards[1].value + Dealer.dealerCards[1].suit);
+    card4Div.text(Dealer.dealerCards[1].card);
     $("#dealer").append(card4Div);
   },
   calculatePlayerSum: function(){
     var placeholder1 = 0;
     for(var i = 0; i<Player.playerCards.length; i++){
-      placeholder1 += Player.playerCards[i].realValue;
+      placeholder1 += Player.playerCards[i].value;
     }
     Player.cardSum = placeholder1;
     console.log("player sum", Player.cardSum);
@@ -408,7 +394,7 @@ var Game = {
   calculateDealerSum: function(){
     var placeholder1 = 0;
     for(var j = 0; j<Dealer.dealerCards.length; j++){
-      placeholder1 += Dealer.dealerCards[j].realValue;
+      placeholder1 += Dealer.dealerCards[j].value;
     }
     Dealer.cardSum = placeholder1;
     console.log("dealer sum", Dealer.cardSum);
@@ -542,13 +528,12 @@ var terminationStatus = function(){
 //STEP 1 - PROMPT USER TO CLICK BET BUTTON TO START BETTING
 $("#alert").text("CLICK BET BUTTON TO MAKE YOUR BET");
 
-//STEP 2 - CREATE DECK, SHUFFLE DECK, RENDER COINS, POST INITIAL BANK AMOUNT
-var newGame = function(){
-  Deck.createDeck(); //create deck
-  Deck.shuffleDeck(); //shuffle deck
-};
+// //STEP 2 - CREATE DECK, SHUFFLE DECK, RENDER COINS, POST INITIAL BANK AMOUNT
+// var newGame = function(){
+//   newDeck.createDeck(); //create deck
+//   Deck.shuffleDeck(); //shuffle deck
+// };
 
-newGame();
 
 var nextRound = function(){
   Player.drawBet(); //render bet, house, and player coins
@@ -564,7 +549,7 @@ $("#makeBetButton").click(Player.makeBet);
 
 //STEP 4 - SUBMIT BET, UPDATE COIN PILES, UPDATE SUM OF TABLE HANDS, CHECK FOR BLACKJACK
 $("#submitBetButton").click(function(){
-    if(Deck.shuffledDeck.length <= 10){
+    if(newDeck.deck.length <= 10){
       $("#alert").text("NOT ENOUGH CARDS TO PLAY");
       return null;
     }
@@ -645,7 +630,7 @@ $("#hitButton").click(function(){
 //STEP 6 - CONTINUE TO NEXT ROUND WITH NEXT ROUND BUTTON
 $("#continueButton").click(function(){
       Game.resetVariables();
-      if(Deck.shuffledDeck.length <= 10){
+      if(newDeck.deck.length <= 10){
         $("#alert").text("NOT ENOUGH CARDS TO PLAY");
         return "round over";
       }

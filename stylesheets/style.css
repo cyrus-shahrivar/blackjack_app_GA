@@ -8,7 +8,7 @@ body {
   border-radius: 100%;
   border: 4px dashed white;
   background-color: gold;
-  position: fixed;
+  position: absolute;
 }
 
 .playerCoins {
@@ -17,18 +17,40 @@ body {
   border-radius: 100%;
   border: 4px dashed white;
   background-color: gold;
+  position: absolute;
+}
+
+#houseCoins {
   position: fixed;
+  top: 60px;
+  left: 60px;
+}
+
+#playerCoins {
+  position: fixed;
+  top: 500px;
+  left: 60px;
+}
+
+#betCoins {
+  position: fixed;
+  top: 300px;
+  left: 500px;
+}
+
+.betCoins {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  border: 4px dashed white;
+  background-color: gold;
+  position: absolute;
 }
 
 #container {
-  border: 6px dashed;
-  border-color: whitesmoke;
-  border-radius: 100px;
   height: 615px;
   width: 528px;
   position: fixed;
-  left: 375px;
-  top: 2px
 }
 
 #alert {
@@ -43,21 +65,21 @@ body {
 
 #dealer {
   height: 200px;
-  width: 100px;
+  width: 850px;
   border: 2px dashed white;
   position: relative;
   top: 10px;
-  left: 345px;
+  left: 400px;
   font-size: 20px;
 }
 
 #player {
   height: 200px;
-  width: 100px;
+  width: 850px;
   border: 2px dashed white;
   position: relative;
   top: 190px;
-  left: 345px;
+  left: 400px;
   font-size: 20px;
 }
 
@@ -76,6 +98,12 @@ h4 {
   margin: 10px auto;
 }
 
+#buttonsContainer {
+  position: fixed;
+  top: 270px;
+  left: 20px;
+}
+
 #makeBetButton:hover, #submitBetButton:hover, #quitButton:hover, #hitButton:hover, #standButton:hover, #continueButton:hover {
   background-color: yellow;
 }
@@ -85,9 +113,9 @@ h4 {
   height: 50px;
   border-radius: 35%;
   border: 2px solid white;
-  position: fixed;
-  top: 400px;
-  left: 420px;
+  position: absolute;
+  top: 0px;
+  left: 20px;
   background-color: yellowgreen;
 }
 
@@ -96,9 +124,9 @@ h4 {
   height: 50px;
   border-radius: 35%;
   border: 2px solid white;
-  position: fixed;
-  top: 460px;
-  left: 420px;
+  position: absolute;
+  top: 60px;
+  left: 20px;
   background-color: yellowgreen;
 }
 
@@ -107,9 +135,9 @@ h4 {
   height: 50px;
   border-radius: 35%;
   border: 2px solid white;
-  position: fixed;
-  top: 460px;
-  left: 520px;
+  position: absolute;
+  top: 60px;
+  left: 120px;
   background-color: yellowgreen;
 }
 
@@ -118,9 +146,9 @@ h4 {
   height: 50px;
   border-radius: 35%;
   border: 2px solid white;
-  position: fixed;
-  top: 400px;
-  left: 520px;
+  position: absolute;
+  top: 0px;
+  left: 120px;
   background-color: yellowgreen;
 }
 
@@ -129,9 +157,9 @@ h4 {
   height: 50px;
   border-radius: 35%;
   border: 2px solid white;
-  position: fixed;
-  top: 400px;
-  left: 620px;
+  position: absolute;
+  top: 0px;
+  left: 220px;
   background-color: yellowgreen;
 }
 
@@ -140,9 +168,9 @@ h4 {
   height: 50px;
   border-radius: 35%;
   border: 2px solid white;
-  position: fixed;
-  top: 460px;
-  left: 620px;
+  position: absolute;
+  top: 60px;
+  left: 220px;
   background-color: yellowgreen;
 }
 
@@ -150,7 +178,7 @@ h4 {
   display: inline;
   position: fixed;
   top: 66px;
-  left: 770px;
+  left: 370px;
   width: 20px;
   overflow-wrap: break-word;
   font-size: 20px;
@@ -162,7 +190,7 @@ h4 {
   display: inline;
   position: fixed;
   top: 435px;
-  left: 770px;
+  left: 370px;
   width: 20px;
   overflow-wrap: break-word;
   font-size: 20px;
@@ -171,14 +199,14 @@ h4 {
 }
 
 .cardLook {
-  border: 2px solid;
+  border: 0px;
   text-align: center;
-  height: 8px;
+  font-size: 125px;
   text-align: left;
   background-color: rgba(243, 59, 59, 1);
   color: white;
   width: 96px;
-  display: inline-table;
+  display: table-cell;;
   text-align: center;
 }
 
@@ -187,7 +215,7 @@ h4 {
 #bankTitle {
   position: fixed;
   top: 580px;
-  left: 505px;
+  left: 65px;
   font-size: 20px;
 }
 
@@ -195,7 +223,7 @@ h4 {
 #bankAmount {
   position: fixed;
   top: 580px;
-  left: 575px;
+  left: 135px;
   font-size: 20px;
 }
 
@@ -211,7 +239,7 @@ h4 {
 
 #tooltip {
   position: fixed;
-  right: 30px;
+  left: 30px;
   top: 10px;
   color: white;
 }
