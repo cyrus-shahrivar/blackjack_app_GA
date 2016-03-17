@@ -232,7 +232,7 @@ var Player = {
   checkForAces: function(){
     this.numAces = 0;
       for(var i = 0; i<Player.playerCards.length; i++){
-        if(Player.playerCards[i].value === "A"){
+        if(Player.playerCards[i].value === 11){
           this.numAces += 1;
         }
       }
@@ -283,7 +283,7 @@ var Dealer = {
   },
   checkForAces: function(){
       for(var i = 0; i<Dealer.dealerCards.length; i++){
-        if(Dealer.dealerCards[i].value === "A"){
+        if(Dealer.dealerCards[i].value === 11){
           this.numAces += 1;
         }
       }
