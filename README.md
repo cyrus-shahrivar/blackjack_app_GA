@@ -1,9 +1,9 @@
-# BLACKJACK
-#### Version 1.35
-#### http://www.cyrusshahrivar.com/blackjack
+<img src="./images/screenshot.png"/ width="500px">
 
-#### Author: Cyrus Shahrivar
-#### Date: July 2016
+# BLACKJACK
+Creator: Cyrus Shahrivar<br/>
+Version 1.40 (July 2016)<br/>
+http://www.cyrusshahrivar.com/blackjack
 
 #### Table of Contents
 1. [Technologies Used](#tech)
@@ -21,7 +21,7 @@
 <a id="install"></a>
 #### Installation Instructions:
 1. Use a modern browser.
-2. Follow this link to game: http://www.cyrusshahrivar.com/blackjack
+2. Follow this link to the game: http://www.cyrusshahrivar.com/blackjack
 
 <a id="wireframes"></a>
 #### Initial Wireframes:
